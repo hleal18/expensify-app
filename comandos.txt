@@ -1,0 +1,90 @@
+Instalar live-server desde npm:
+npm install -g liver-server
+Iniciar live-server:
+live-server public
+Instalar babel:
+npm install -g babel-cli@6.24.1
+Iniciar babel con presets:
+babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch
+
+Se desinstalan las dependencias globales debido a las graves implicaciones que conlleva.
+1. No se enlistan en el package.json (ejemplo: babel cli y live-server)
+lo cual dificulta la colaboración.
+2. Si se tuvieran más proyectos que usan React, implicaría que todos ellos tienen que usar
+las mismas versiones que fueron instaladas, lo cual no es correcto.
+
+Se procede a desinstalar las mencionadas del ambiente global.
+-- yarn global remove babel-cli live-server
+
+Se instalan ahora localmente.
+npm install babel-cli@6.24.1 live-server
+
+Tener en cuenta que ahora no son accesibles desde el cmd. Comandos como babel... y live-server...
+ya no estan disponibles.
+Se definen scripts en el package.json
+
+Se instala webpack localmente
+-- yarn add webpack@3.1.0
+Se requiere proveer un archivo de configuración.
+
+Webpack se encarga de realizar el trabajo que hacía babel.
+Se configura scripts para el webpack y un archivo config.
+
+Se instala como ejemplo el modulo validator por npm. version 8.0.0
+Se accede a él importandolo en app.js como:
+import validator from 'validator';
+es suficiente con poner el nombre ya que se sabe que buscará
+un módulo instalado.
+
+Luego se instala React por medio del npm.
+Se instala también ReactDOM por medio del npm.
+npm install react@16.0.0 react-dom@16.0.0
+
+Hay que instalar dependencias para ejecutar babel a través del
+webpack. Se hacen localmente.
+1. babel-core@6.25.0 : permite correr babel desde herramientas como
+webpack.
+2. babel-loader@7.1.1 : es un plugin de webpack. Le indica a webpack como
+ejecutar babel.
+Se completan las configuraciones del webpack y babelrc.
+
+Se observa que con un simple instruccions jsx el archivo generado, bundle.js
+genera una cantidad exagerada de código (20000 líneas).
+Al usar webpack para producción mucho de ese código, no estará.
+
+Se instala un nuevo plugin, babel-plugin-transform-class-properties
+Permite usar sintaxis es6 para definir propiedades de clases y traducirlo a es6.
+npm install babel-plugin-transform-class-properties
+se configura babelrc agregando una nueva propiedad, plugins con "transform-class-properties"
+
+se instala react-modal. Un componente de terceros.
+
+se comienza con estilizar el código a través de webpack.
+se define una nueva regla para cada archivo que contenga css.
+ahora se buscan los loader.
+se instala css-loader. Permite a webpack cargar el css y convertirlo a un javascript.
+se instala style-loader. permite el css que esta en javascript y lo inyecta al DOM, para que se muestre
+en el navegador.
+se busca otro modulo para scss y que lo compile a css.
+se agrega un nuevo loader.
+se modifica el test para que sea scss.
+se instalan dos nuevas herramientas:
+sass-loader
+node-sass (es el que lo convierte en css)
+solo se agrega el loader de sass-loader, el implícitamente usará node-sass.
+
+se estan aplicando estilos en el navegador, lo cual implica que puedan haber situaciones
+inesperadas con navegadores diferentes. Para ello se requieren de los resets.
+se instala el paquete normalize-css
+
+se agrega el paquete react-router-dom@4.2.2
+y se importa la nueva libreria en app.js
+se configura el devserver, para que cada vez que haya un cambio
+a otra página, se corra el index.html y la nueva librería, se encargue de decidir
+que componente es el que se debe renderizar, debido a que si no se hace, el navegador
+por defecto hará solicitudes al servidor para esa página que está en otra ruta, generando
+un error debido a que no se encuentra.
+Esta nueva instrucción agregada al dev-server, le indica al servidor que el routing
+se hará en el lado del cliente.
+Aparece un nuevo aviso al reiniciar el dev-server:
+404s will fallback to /index.html (lo cual es lo que se quería).
