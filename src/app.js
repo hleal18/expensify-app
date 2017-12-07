@@ -1,6 +1,6 @@
 import React, { Children } from 'react';
 import ReactDOM from 'react-dom';
-import {BrowserRouter, Route, Switch, Link} from 'react-router-dom';
+import {BrowserRouter, Route, Switch, Link, NavLink} from 'react-router-dom';
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 
@@ -31,31 +31,25 @@ const HelpPage = () => (
     </div>
 );
 
-//Se usan evenlisteners para sobreescribir el comportamiento por defecto
-//del navegador al realizar petición al servidor cuando se clickea un link
-//que está contemplado en el código del Routing del lado del cliente.
-//para ello se usa el componente Link con sus propiedades.
 const NotFoundPage = () => (
     <div>
         404! - <Link to="/">Go home</Link>
     </div>
 );
 
+//Ahora se usa NavLink.
+//Ofrece:
+//la identificación mediante una clase. ideal para aplicar estilos css.
+//así como el link que coincide con la URL actual.
+//hay que aplicar el mismo condicionamiento de Route, debido a que luego
+//pone en negrita link que no está del todo activo.
 const Header = () => (
     <header>
         <h1>Expensify</h1>
-        <div>
-            <Link to="/">Go to Home Page.</Link>
-        </div>
-        <div>
-            <Link to="/create">Go to create expense page.</Link>
-        </div>
-        <div>
-            <Link to="/edit">Go to edit page.</Link>
-        </div>
-        <div>
-            <Link to="/help">Go to help page.</Link>
-        </div>
+        <NavLink to="/" activeClassName="is-active" exact={true}>Dashboard</NavLink>
+        <NavLink to="/create" activeClassName="is-active">Create Expense</NavLink>
+        <NavLink to="/edit" activeClassName="is-active">Edit Expense</NavLink>
+        <NavLink to="/help" activeClassName="is-active">Help</NavLink>
     </header>
 );
 
