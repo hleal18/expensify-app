@@ -88,3 +88,17 @@ Esta nueva instrucción agregada al dev-server, le indica al servidor que el rou
 se hará en el lado del cliente.
 Aparece un nuevo aviso al reiniciar el dev-server:
 404s will fallback to /index.html (lo cual es lo que se quería).
+
+Se muestran los beneficios de usar redux con respecto a aplicaciones complejas
+que requiere manejar estados y cambios de datos.
+Para ello reduzx usa un contenedor global de estados, de forma que los componentes
+definidos sean realmente reutilizables y no haya mucho acoplamiento entre los
+componentes. También para un componente padre no se vea en la necesidad de pasar
+muchos props a un componente hijo. Además pueden haber situaciones donde no haya
+un componente padre fácilmente visualizable por lo cual el control de los estados
+no puede ser asignado a un componente común y corriente.
+El paso de propiedades es altamente útil y seguirá sirviendo si la relación
+de uso es directa, es decir, no se pasan props a componentes intermediarios para que
+uno más lejano sea el que lo usa.
+¿Dónde guarda el estado de la app?
+¿Cómo crear componentes altamente reutilizables?
