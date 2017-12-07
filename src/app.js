@@ -45,16 +45,16 @@ const Header = () => (
     <header>
         <h1>Expensify</h1>
         <div>
-        <Link to="/">Go to Home Page.</Link>
+            <Link to="/">Go to Home Page.</Link>
         </div>
         <div>
-        <Link to="/create">Go to create expense page.</Link>
+            <Link to="/create">Go to create expense page.</Link>
         </div>
         <div>
-        <Link to="/edit">Go to edit page.</Link>
+            <Link to="/edit">Go to edit page.</Link>
         </div>
         <div>
-        <Link to="/help">Go to help page.</Link>
+            <Link to="/help">Go to help page.</Link>
         </div>
     </header>
 );
