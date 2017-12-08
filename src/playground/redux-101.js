@@ -1,18 +1,39 @@
 import { createStore } from 'redux';
 
-//Se createStore retorna un objeto Store, que contiene el estado de la app.
+//Action generators. Funciones que retornan acciones. Se ponen en un solo lugar.
+//Se usa destructuring en argumentos.
+//Se usan funciones anónimas que reciben un objeto que por defecto, estará vacío.
+//Se usa destructuring en el objeto pasado como parámetro y se le añade también
+//en el campo un valor por defecto, lo que simplifica la asignación de valores.
+const incrementCount = ({ incrementBy = 1 } = {}) => ({
+    type: 'INCREMENT',
+    incrementBy
+});
+
+const decrementCount = ({ decrementBy = 1 } = {}) => ({
+    type: 'DECREMENT',
+    decrementBy
+});
+
+const resetCount = () => ({
+    type: 'RESET'
+});
+
+const setCount = ({ count } = {}) => ({
+    type: 'SET',
+    count
+});
+
 const store = createStore((state = { count: 0 }, action) => {
     switch (action.type) {
         case 'INCREMENT':
-            const incrementBy = typeof action.incrementBy === 'number' ? action.incrementBy : 1;
             return {
-                count: state.count + incrementBy
+                count: state.count + action.incrementBy
             };
             break;
-        case 'DECREMENT':
-            const decrementBy = typeof action.decrementBy === 'number' ? action.decrementBy : 1;
+        case 'DECREMENT':            
             return {
-                count: state.count - decrementBy
+                count: state.count - action.decrementBy
             };
             break;
         case 'RESET':
@@ -30,37 +51,18 @@ const store = createStore((state = { count: 0 }, action) => {
     }
 });
 
-//Se invoca la función cada vez que el estado cambia.
-//Para desuscribir, se guarda el retorno de subscribe y se invoca luego
-//para hacer efectiva la desubscripción.
- const unsubscribe = store.subscribe(() => {
+const unsubscribe = store.subscribe(() => {
      console.log(store.getState());
  });
 
- //Las Actions siempre deben tener un 'type' como mínimo.
+store.dispatch(incrementCount({ incrementBy: 5 }));
 
-store.dispatch({
-    type: 'INCREMENT',
-    incrementBy: 5
-});
+store.dispatch(incrementCount());
 
-//Solo se imprime una vez el estado por consola.
-//unsubscribe();
+store.dispatch(resetCount());
 
-store.dispatch({
-    type: 'INCREMENT'
-});
+store.dispatch(decrementCount());
 
-store.dispatch({
-    type: 'RESET'
-});
+store.dispatch(decrementCount({ decrementBy: 10 }));
 
-store.dispatch({
-    type: 'DECREMENT',
-    decrementBy: 10
-});
-
-store.dispatch({
-    type: 'SET',
-    count: 101
-})
+store.dispatch(setCount({ count: 101 }));
