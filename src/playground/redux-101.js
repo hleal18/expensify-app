@@ -4,13 +4,15 @@ import { createStore } from 'redux';
 const store = createStore((state = { count: 0 }, action) => {
     switch (action.type) {
         case 'INCREMENT':
+            const incrementBy = typeof action.incrementBy === 'number' ? action.incrementBy : 1;
             return {
-                count: state.count + 1
+                count: state.count + incrementBy
             };
             break;
         case 'DECREMENT':
+            const decrementBy = typeof action.decrementBy === 'number' ? action.decrementBy : 1;
             return {
-                count: state.count - 1
+                count: state.count - decrementBy
             };
             break;
         case 'RESET':
@@ -18,34 +20,47 @@ const store = createStore((state = { count: 0 }, action) => {
                 count: 0
             };
             break;
+        case 'SET':
+            return {
+                count: action.count
+            }
+            break;
         default:
             return state;
     }
 });
 
-//Se imprime un campo en la consola que es getState.
-console.log(store.getState());
+//Se invoca la función cada vez que el estado cambia.
+//Para desuscribir, se guarda el retorno de subscribe y se invoca luego
+//para hacer efectiva la desubscripción.
+ const unsubscribe = store.subscribe(() => {
+     console.log(store.getState());
+ });
 
-//incrementar el estado del count con uno.
-//Para ello, se usan Actions. Son enviados al Store por medio de dispatch.
-//Para ello el segundo parámetro de esa función, se compara con un if interno
-//Y lo modifica de la forma especificada.
-//Provoca que la función asignada a store al usar createStore, se ejecuta.
+ //Las Actions siempre deben tener un 'type' como mínimo.
+
+store.dispatch({
+    type: 'INCREMENT',
+    incrementBy: 5
+});
+
+//Solo se imprime una vez el estado por consola.
+//unsubscribe();
 
 store.dispatch({
     type: 'INCREMENT'
-});
-
-store.dispatch({
-    type: 'INCREMENT'
-});
-
-store.dispatch({
-    type: 'DECREMENT'
 });
 
 store.dispatch({
     type: 'RESET'
 });
 
-console.log(store.getState());
+store.dispatch({
+    type: 'DECREMENT',
+    decrementBy: 10
+});
+
+store.dispatch({
+    type: 'SET',
+    count: 101
+})
