@@ -1,7 +1,7 @@
 {
   "name": "expensify",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "/public/index.html",
   "author": "Humberto Leal <humberto.adolfo@hotmail.com>",
   "license": "MIT",
   "scripts": {
@@ -10,13 +10,14 @@
     "dev-server": "webpack-dev-server"
   },
   "dependencies": {
-    "babel-cli": "^6.24.1",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "1.5.2",
     "babel-preset-react": "6.24.1",
     "css-loader": "^0.28.4",
+    "dependencies": "0.0.1",
     "live-server": "^1.2.0",
     "node-sass": "^4.5.3",
     "normalize.css": "^7.0.0",
