@@ -102,3 +102,5 @@ de uso es directa, es decir, no se pasan props a componentes intermediarios para
 uno más lejano sea el que lo usa.
 ¿Dónde guarda el estado de la app?
 ¿Cómo crear componentes altamente reutilizables?
+
+Se procede a instalar Redux.
