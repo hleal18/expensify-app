@@ -24,7 +24,11 @@ const setCount = ({ count } = {}) => ({
     count
 });
 
-const store = createStore((state = { count: 0 }, action) => {
+//La función es un reducer, decide que hacer con respecto a la acción evaluada.
+//Los reducer son funciones puras (el output esta determinado por el input, 
+//no usa nada externo) toda la información que necesita está en el input.
+//Nunca se cambia el state ni el action dentro.
+const countReducer = (state = { count: 0 }, action) => {
     switch (action.type) {
         case 'INCREMENT':
             return {
@@ -49,7 +53,9 @@ const store = createStore((state = { count: 0 }, action) => {
         default:
             return state;
     }
-});
+};
+
+const store = createStore(countReducer);
 
 const unsubscribe = store.subscribe(() => {
      console.log(store.getState());
