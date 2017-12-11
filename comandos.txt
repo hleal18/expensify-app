@@ -104,3 +104,6 @@ uno más lejano sea el que lo usa.
 ¿Cómo crear componentes altamente reutilizables?
 
 Se procede a instalar Redux.
+
+Para la generación automática de IDs, se usa la librería UUID.
+npm install UUID.
