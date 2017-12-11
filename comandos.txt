@@ -107,3 +107,7 @@ Se procede a instalar Redux.
 
 Para la generación automática de IDs, se usa la librería UUID.
 npm install UUID.
+
+Para usar el spread operator en objetos, hay que configurar babel, para que funcione correcta - 
+mente.
+npm install babel-plugin-transform-object-rest-spread
