@@ -111,3 +111,5 @@ npm install UUID.
 Para usar el spread operator en objetos, hay que configurar babel, para que funcione correcta - 
 mente.
 npm install babel-plugin-transform-object-rest-spread
+
+Para el enlace de los componentes react y el store de redux se usa la librería react-redux@5.0.5
