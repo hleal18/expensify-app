@@ -18,7 +18,6 @@ store.dispatch(setTextFilter('water'));
 
 setTimeout(() => {
     store.dispatch(setTextFilter('rent'));
-    console.log('Se corrío');
 }, 3000)
 
 const state = store.getState();
