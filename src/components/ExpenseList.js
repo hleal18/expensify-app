@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 const ExpenseList = (props) => (
     <div>
         <h1> Expense List </h1>
+        {props.filters.text}
         {props.expenses.length}
     </div>
 );
@@ -17,10 +18,20 @@ const ExpenseList = (props) => (
 //en su propio campo de props, de forma que en la propia implementación del ExpenseList
 //se tiene acceso a props.name que idealmente proviene del Store de redux al cual se
 //accedió mediante el método connect.
-const ConnectedExpenseList = connect((state) => {
+//Se define el mapStateToProps, que permite mezclar el el campo específico del estado
+//con los props del componente que posteriormente se manipula.
+//Cada vez que el state cambia, la función de este componente, mapStateToProps es ejecutada.
+//ocasionando un re-renderizado.
+const mapStateToProps = (state) => {
+    console.log('Se ejecutó');
     return {
-        expenses: state.expenses
+        expenses: state.expenses,
+        filters: state.filters
     };
-})(ExpenseList);
+};
 
-export default ConnectedExpenseList;
+//El segundo parámetro se entiene como el parámetro de una función más interna.
+//Se retorna un HOC conectado con el state.
+//El primer parámetro ocasiona que se suscriba al Store, estando así al asecho de los cambios
+//que sucedan para así ejecutarse.
+export default connect(mapStateToProps)(ExpenseList);
