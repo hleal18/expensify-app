@@ -113,3 +113,9 @@ mente.
 npm install babel-plugin-transform-object-rest-spread
 
 Para el enlace de los componentes react y el store de redux se usa la librería react-redux@5.0.5
+
+Se usa una libreria third-party para los dates. Se llama moment.js (manipular fechas)
+Tambien se consultan los react-dates de airbnb (datepicker)
+npm install moment@2.18.1 react-dates@12.7.0
+Hay un ultimo paquete, una dependencia que usa react-dates.
+npm install react-addons-shallow-compare@15.6.0
