@@ -1,8 +1,11 @@
+import moment from 'moment';
+
 const filtersReducerDefaultState = {
     text: '',
     sortBy: 'date',
-    startDate: undefined,
-    endDate: undefined
+    //Se agregan los valores por defecto el comienzo del mes y final del mismo.
+    startDate: moment().startOf('month'),
+    endDate: moment().endOf('month')
 }
 
 export default (state = filtersReducerDefaultState, action) => {
