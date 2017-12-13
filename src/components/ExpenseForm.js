@@ -28,7 +28,8 @@ class ExpenseForm extends Component {
         amount: '',
         note: '',
         createdAt: moment(),
-        calendarFocused: false
+        calendarFocused: false,
+        error: ''
     };
     //Se enlaza la descripción del estado con la que escribe el usuario.
     //se mantiene guardado el estado en todo momento.
@@ -47,20 +48,43 @@ class ExpenseForm extends Component {
         //Se usa una expresión regular. (regular expressiones)
         //es un tema grande a consultar.
         //Se busca la documentación en regex101.com
-        if (amount.match(/^\d*(\.\d{0,2})?$/)) {
+        //se fuerza que haya por lo menos un numero antes del punto decimal.
+        //tambien se permite que el usuario borre toda la cantidad.
+        if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
             this.setState(() => ({ amount }));
         }
     };
     onDateChange = (createdAt) => {
-        this.setState(() => ({ createdAt }));
+        if(createdAt) {
+            this.setState(() => ({ createdAt }));
+        }
     };
     onFocusChange = ({ focused }) => {
         this.setState(() => ({ calendarFocused: focused }))
     };
+    onSubmit = (e) => {
+        e.preventDefault();
+
+        if(!this.state.description || !this.state.amount) {
+            //Set error state equal to 'Please provide description and amount.'
+            this.setState(() => ({ error: 'Please provide description and amount.' }));
+        } else {
+            //Clear the error
+            this.setState(() => ({ error: '' }));
+            this.props.onSubmit({
+                description: this.state.description,
+                amount: parseFloat(this.state.amount),
+                note: this.state.note,
+                //Se le pasa el timestamp. No el objeto moment.
+                createdAt: this.state.createdAt.valueOf()
+            });
+        }
+    };
     render() {
         return (
             <div>
-                <form>
+                {this.state.error && <p>{this.state.error}</p>}
+                <form onSubmit={this.onSubmit}>
                     <input
                         type="text"
                         placeholder="Description"
@@ -94,5 +118,10 @@ class ExpenseForm extends Component {
         );
     }
 }
+
+//Una vez terminada la implementación del componente y sus estados queda incluir la conexión
+//con los datos de redux.
+//Debido a que este componente será reutilizado, no combiene usarlo aquí sino en los componentes
+//que se beneficiarán de éste.
 
 export default ExpenseForm;
