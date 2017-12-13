@@ -1,20 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { removeExpense } from '../actions/expenses';
+import { Link } from 'react-router-dom';
 
 const ExpenseListItem = ({ description, id, amount, createdAt, dispatch }) => {
-    const handlerRemoveExpense = () => {
-        const retorno = dispatch(removeExpense({ id }));
-    };
     return (
         <div>
-            <h3>{description}</h3>
-            <p>{amount} - {createdAt}</p>
-            <button onClick={() => dispatch(removeExpense({id}))}> Remove </button>
+            <Link to={"/edit/" + id}>
+                <h3>{description}</h3>
+            </Link>
+            <p>{amount} - {createdAt}</p>            
         </div>
     );
 };
 
 //Cuando no se necesita acceso al state y solo al dispatch, es suficiente no incluir el
 //primer parámetro.
-export default connect()(ExpenseListItem);
+export default ExpenseListItem;
