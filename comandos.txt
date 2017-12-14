@@ -126,3 +126,21 @@ npm install jest@20.0.4
 se usa mayormente desde el cli mediante scripts.
 
 Para el testeo de los componentes y su renderización se instala react-test-renderer@16.0.0
+
+Debido a la gran simplicidad de la libreria anterior, se importará otra que se apoya sobre la dicha 
+anteriormente, solo que añade funcionalidades que se adaptan mejor a requisitos de testeo más complejos.
+la libreria es
+npm install enzyme@3.0.0
+En esta version se requieren otros add-ons para que funcione correctamente.
+El adaptador le permite especificar la version de react a testear, lo que la hace más liviana.
+enzyme-adapter-react-16@1.0.0
+Tambien otro modulo requerido, es provisto por el navegador, pero en caso de no poseerlo puede
+causar problemas. request animation frame
+raf@3.3.2
+npm install enzyme@3.0.0 enzyme-adapter-react-16@1.0.0 raf@3.3.2
+Para la correcta configuracion de Enzyme con el adaptador mismo se crea en la carpeta test el fichero
+setupTests.js con la configuración (tres líneas de código).
+Luego, se realiza otro fichero que le dice al jest que el anterior creado (setupTests.js) debe ejecutarse
+en conjunto con las pruebas para que todo funcione correctamente.
+Se reconfigura el script en la configuracion de los paquetes.
+
