@@ -18,11 +18,7 @@ store.dispatch(addExpense({ description: 'Rent', amount: 109500 }));
 store.dispatch(setTextFilter('bill'));
 
 setTimeout(() => {
-<<<<<<< HEAD
-    store.dispatch(setTextFilter('rent'));
-=======
     store.dispatch(setTextFilter('water'));
->>>>>>> e9dd826872f44da9b0436f62599612af3e2b1c0c
 }, 3000)
 
 const state = store.getState();
