@@ -124,3 +124,5 @@ Se comienza la sección para las unit test automáticas, para ello se usa Jest.
 Se instala jest.
 npm install jest@20.0.4
 se usa mayormente desde el cli mediante scripts.
+
+Para el testeo de los componentes y su renderización se instala react-test-renderer@16.0.0
