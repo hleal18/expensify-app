@@ -1,9 +1,20 @@
 import React from 'react';
+import ExpenseForm from './ExpenseForm';
+import { connect } from 'react-redux';
+import { addExpense } from '../actions/expenses';
 
-const AddExpensePage = () => (
+//Se reutiliza ExpenseForm y se conecta con connect de redux
+const AddExpensePage = (props) => (
     <div>
-        This is from my add expense component.
+        <h1>Add expense</h1>
+        <ExpenseForm
+            onSubmit={(expense) => {
+                props.dispatch(addExpense(expense));
+                //Lo provee router. Permite redireccionar cuando se suban los datos.
+                props.history.push('/');
+            }}
+        />
     </div>
 );
 
-export default AddExpensePage;
+export default connect()(AddExpensePage);

@@ -1,12 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ExpenseListItem from './ExpenseListItem';
+import selectExpenses from '../selectors/expenses';
 
 
 const ExpenseList = (props) => (
     <div>
         <h1> Expense List </h1>
-        {props.filters.text}
-        {props.expenses.length}
+        {
+            props.expenses.map((expense) => (<ExpenseListItem {...expense} key={expense.id} />))
+        }
     </div>
 );
 
@@ -23,10 +26,8 @@ const ExpenseList = (props) => (
 //Cada vez que el state cambia, la función de este componente, mapStateToProps es ejecutada.
 //ocasionando un re-renderizado.
 const mapStateToProps = (state) => {
-    console.log('Se ejecutó');
     return {
-        expenses: state.expenses,
-        filters: state.filters
+        expenses: selectExpenses(state.expenses, state.filters)
     };
 };
 
