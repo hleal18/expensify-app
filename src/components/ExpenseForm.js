@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
-//El css relacionado con el singledatepicker.
-import 'react-dates/lib/css/_datepicker.css';
 
 // Se recibe una instancia de moment.
 // tiene el momento actual.
