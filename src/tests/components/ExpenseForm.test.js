@@ -2,6 +2,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import ExpenseForm from '../../components/ExpenseForm';
 import expenses from '../fixtures/expenses';
+import moment from 'moment';
 
 test('should render ExpenseForm correctly', () => {
     const wrapper = shallow(<ExpenseForm />);
@@ -118,4 +119,25 @@ test('should call onsubmit prop for valid form submission.', () => {
         note: expenses[0].note,
         createdAt: expenses[0].createdAt
     });
+});
+
+//Se busca evaluar el cambio de fecha en el componente SingleDatePicker
+//Que se invoque correctamente y que se refleje en el state.
+test('should set new date on date change', () => {
+    const now = moment();
+    //Se obtiene el componente.
+    const wrapper = shallow(<ExpenseForm />);
+    //Se usa la función props para obtener las propiedades. O prop.
+    //Se obtiene devuelta la función que se invoca.
+    //Se le pasa una instancia de moment, debido a que eso es lo que recibe.
+    wrapper.find('SingleDatePicker').prop('onDateChange')(now);
+    expect(wrapper.state('createdAt')).toEqual(now);
+});
+
+//Se evalua de que onFocusChange, modifique correctamente el state
+test('should set new focus change on SingleDatePicker', () => {
+    const focused = true;
+    const wrapper = shallow(<ExpenseForm />);
+    wrapper.find('SingleDatePicker').prop('onFocusChange')({ focused });
+    expect(wrapper.state('calendarFocused')).toEqual(focused);
 });
