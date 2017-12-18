@@ -57,15 +57,25 @@ test('should set note on input change', () => {
     expect(wrapper.state('note')).toBe(note);
 });
 
+//Se evalua la cantidad de dinero ingresado se maneje correctamente en el componente.
 test('should set amount on input change', () => {
-    const amount = 500.29.toString(); 
+    //Se pasa a string debido a que en el componente, así se manejan.
+    const amount = 500.29.toString();
+    //Se obtiene acceso a un componente que envuelve al ExpenseForm.
+    //Se tiene acceso a funciones que facilitan la ejecución de test cases.
     const wrapper = shallow(<ExpenseForm />);
+    //Se hace referencia al primer input que se encuentra en la página.
+    //Se simula el evento change, que se da con la funcion onChange definida.
+    //Se define el valor correspondiente a e.target.value, teniendo en cuenta
+    //que por sí solo no se tiene acceso a 'e'.
     wrapper.find('input').at(1).simulate('change', {
         target: { value: amount }
     });
     expect(wrapper.state('amount')).toBe(amount);
 });
 
+//Se evalua cuando se introduce una cantidad no valida (que no cumpla con el formato)
+//no se debe guardar ningun dato en el 'state' del componente.
 test('should not set amount by invalid input change', () => {
     const amount = "345.2555";
     const wrapper = shallow(<ExpenseForm />);
@@ -73,4 +83,39 @@ test('should not set amount by invalid input change', () => {
         target: { value: amount }
     });
     expect(wrapper.state('amount').length).toBe(0);
+});
+
+//Se procede a analizar las 'mock functions' o 'fake functions'
+//Se quiere explorar que onSubmit se invoque con los correctos argumentos
+//en su correcto formato.
+//Para ello se usan los Spies.
+test('should call onsubmit prop for valid form submission.', () => {
+    // EJEMPLO BÁSICO.
+    // Se guarda un spy que retorna jest.
+    // const submitSpy = jest.fn();
+    // Se encarga de invocar el spy y que pase el test.
+    // submitSpy();
+    // Detecta si el spy fue invocado.
+    // expect(submitSpy).toHaveBeenCalled();
+    // Se usa para evaluar si los parámetros con los cuales fué invocado, fueron los correctos.
+    // submitSpy('Humberto', 'Colombia');
+    // expect(submitSpy).toHaveBeenCalledWith('Humberto', 'Colombia');
+
+    // Se crea el spy.
+    const onSubmitSpy = jest.fn();
+    // Se crea el wrapper con las props que se observan. Se pasa el spy como el onsubmit.
+    const wrapper = shallow(<ExpenseForm expense={expenses[0]} onSubmit={onSubmitSpy}/>);
+    // Se simula el submit
+    wrapper.find('form').simulate('submit', {
+        preventDefault: () => { }
+    });
+    // Se evalua el resultado esperado del error. Debe ser vacío.
+    expect(wrapper.state('error')).toBe('');
+    // Se evalua que la ultima vez que fue invocado el spy, fue con los argumentos que se ven.
+    expect(onSubmitSpy).toHaveBeenLastCalledWith({
+        description: expenses[0].description,
+        amount: expenses[0].amount,
+        note: expenses[0].note,
+        createdAt: expenses[0].createdAt
+    });
 });

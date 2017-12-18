@@ -75,7 +75,7 @@ class ExpenseForm extends Component {
             this.setState(() => ({ error: '' }));
             this.props.onSubmit({
                 description: this.state.description,
-                amount: parseFloat(this.state.amount),
+                amount: parseFloat(this.state.amount)*100,
                 note: this.state.note,
                 //Se le pasa el timestamp. No el objeto moment.
                 createdAt: this.state.createdAt.valueOf()
