@@ -15,7 +15,7 @@ export class AddExpensePage extends React.Component {
         //props.dispatch(addExpense(expense));
         //Se agrega el prop que está enlazado con la nueva
         //funcion.
-        this.props.onSubmit(expense);
+        this.props.addExpense(expense);
         //Lo provee router. Permite redireccionar cuando se suban los datos.
         this.props.history.push('/');
     }
@@ -36,7 +36,7 @@ export class AddExpensePage extends React.Component {
 //Establece la invocación del dispatch, ahora accesible
 //desde las props del componente.
 const mapDispatchToProps = (dispatch) => ({
-    onSubmit: (expense) => dispatch(addExpense(expense))
+    addExpense: (expense) => dispatch(addExpense(expense))
 });
 
 export default connect(undefined, mapDispatchToProps)(AddExpensePage);

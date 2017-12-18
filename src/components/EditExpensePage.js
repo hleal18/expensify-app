@@ -3,31 +3,34 @@ import { connect } from 'react-redux';
 import ExpenseForm from './ExpenseForm';
 import { editExpense, removeExpense } from '../actions/expenses';
 
-const EditExpensePage = (props) => {
-    console.log(props);
-    return (
-        <div>
-            {/*Se accede al id que es pasado por el router y accedido mediante
-                match y params. Se encuentra en la url.
-                Consultar en la consola el history en la herramienta React.
-            */}
-            <ExpenseForm 
-                expense={props.expense}
-                onSubmit={(expense) => {
-                    props.dispatch(editExpense(props.expense.id, expense));
-                    props.history.push('/');                    
-                }}
-            />
-            <button
-                onClick={() => {
-                    props.dispatch(removeExpense({ id: props.expense.id }));
-                    props.history.push('/');
-                }}
-            >
-                Remove
+export class EditExpensePage extends React.Component {
+    onSubmit = (expense) => {
+        this.props.editExpense(this.props.expense.id, expense);
+        this.props.history.push('/');
+    }
+    onClick = () => {
+        this.props.removeExpense({ id: this.props.expense.id });
+        this.props.history.push('/');
+    }
+    render() {
+        return (
+            <div>
+                {/*Se accede al id que es pasado por el router y accedido mediante
+            match y params. Se encuentra en la url.
+            Consultar en la consola el history en la herramienta React.
+        */}
+                <ExpenseForm
+                    expense={this.props.expense}
+                    onSubmit={this.onSubmit}
+                />
+                <button
+                    onClick={this.onClick}
+                >
+                    Remove
             </button>
-        </div>
-    );
+            </div>
+        )
+    }
 }
 
 //Se debe acceder a los props del componente original, con ello es suficiente
@@ -38,4 +41,9 @@ const mapStateToProps = (state, props) => {
     }
 }
 
-export default connect(mapStateToProps)(EditExpensePage);
+const mapDispathToProps = (dispatch) => ({
+    editExpense: (id, expense) => (dispatch(editExpense(id, expense))),
+    removeExpense: (data) => (dispatch(removeExpense(data)))
+});
+
+export default connect(mapStateToProps, mapDispathToProps)(EditExpensePage);
