@@ -12,6 +12,9 @@ module.exports = (env) => {
     //Al ejecuta un comando que accione el webpack, se muestra en
     //consola los datos especificados por el comando.
     console.log('env', env);
+
+    const isProduction = env === 'production';
+
     return {
         entry: './src/app.js',
         output: {
@@ -40,7 +43,12 @@ module.exports = (env) => {
                 ]
             }]
         },
-        devtool: 'cheap-module-eval-source-map',
+        //Los source maps, agregan mucho espacio al proyecto.
+        //Se busca disminuirlo lo más posible, teniendo en cuenta que
+        //aún en producción son útiles.
+        //source-map es el propicio para producción. Toma más tiempo.
+        //Permite que el bundle.js disminuya el espacio que ocupa.
+        devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
         devServer: {
             contentBase: path.join(__dirname, 'public'),
             historyApiFallback: true

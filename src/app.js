@@ -13,6 +13,8 @@ import 'react-dates/lib/css/_datepicker.css';
 
 const store = configureStore();
 
+console.log('test');
+
 //Provider permite proveer el Store (donde se guardan los estados de la app)
 //a todos los componentes React que conforman la app.
 const jsx = (
