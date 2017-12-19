@@ -1,4 +1,8 @@
 const path = require('path');
+//Se usa un plugin de webpack que permita extraer texto del bundle.js
+//para así filtrar los estilos css que se quieren poner en otro archivo.
+//extract-text-webpack-plugin
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 //Devuelve la configuración del webpack.
 //Se configura una función debido a que permite ser llamada
@@ -14,6 +18,7 @@ module.exports = (env) => {
     console.log('env', env);
 
     const isProduction = env === 'production';
+    const CSSExtract = new ExtractTextPlugin('styles.css');
 
     return {
         entry: './src/app.js',
@@ -35,20 +40,34 @@ module.exports = (env) => {
                 exclude: /node_modules/
             }, {
                 test: /\.s?css$/,
-                //Permite especificar un arreglo de loaders.
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    'sass-loader'
-                ]
+                //Extrae cada scss y css.
+                use: CSSExtract.extract({
+                    use: [
+                        //Permite especificar un arreglo de loaders.
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                sourceMap: true
+                            }
+                        },{
+                            loader: 'sass-loader',
+                            options: {
+                                sourceMap: true
+                            }
+                        }
+                    ]
+                })
             }]
         },
+        plugins: [
+            CSSExtract
+        ],
         //Los source maps, agregan mucho espacio al proyecto.
         //Se busca disminuirlo lo más posible, teniendo en cuenta que
         //aún en producción son útiles.
         //source-map es el propicio para producción. Toma más tiempo.
         //Permite que el bundle.js disminuya el espacio que ocupa.
-        devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
+        devtool: isProduction ? 'source-map' : 'inline-source-map',
         devServer: {
             contentBase: path.join(__dirname, 'public'),
             historyApiFallback: true
