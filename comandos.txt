@@ -144,3 +144,27 @@ Luego, se realiza otro fichero que le dice al jest que el anterior creado (setup
 en conjunto con las pruebas para que todo funcione correctamente.
 Se reconfigura el script en la configuracion de los paquetes.
 
+Al abordar el manejo de repositorios git y entrar en detalles para subir repositorios en github
+se habla del ssh key. Permite una comunicación segura. Se corren los siguientes comandos para comprobar
+si en la pc se encuentra una ssh key y de igual forma, como 'asignar una'.
+El ssh key permite que se suban datos a un repositorio sin necesidad de proveer el username y password
+cada vez que se requiera.
+https://help.github.com/articles/connecting-to-github-with-ssh/
+Se debe hacer desde el git bash.
+Para comprobar si hay:
+ls -al ~/.ssh
+Para generar uuno de tipo rsa, bits, comentario: email
+ssh-keygen -t rsa -b 4096 -C "humberto.adolfo@hotmail.com"
+Las opciones se eligen por defecto.
+Se generan uno publico y otro privado.
+Se usa el ssh-agent
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
+Seguir las instrucciones
+https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/
+Luego de configurar la ssh key en github. Se prueba si es correcta la configuración.
+Se usa:
+ssh -T git@github.com
+Se le da a yes.
+
+
