@@ -166,5 +166,9 @@ Luego de configurar la ssh key en github. Se prueba si es correcta la configurac
 Se usa:
 ssh -T git@github.com
 Se le da a yes.
+Se sube a github mediante la dirección ssh.
+Despues de configurar el origin.
+-u asocia el codigo local con el flujo de subida de github.
+git push -u origin master
 
 
