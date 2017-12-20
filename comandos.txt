@@ -182,6 +182,7 @@ Se agrega un start script para heroku server.
 Se le debe indicar como ejecutar webpack.
 heroku-postbuild : "npm run build:prod"
 Se modifica el gitignore.
+Se pushea el proyecto a el repo remote de heroku
 
 
 
