@@ -184,5 +184,16 @@ heroku-postbuild : "npm run build:prod"
 Se modifica el gitignore.
 Se pushea el proyecto a el repo remote de heroku
 
+Se abordan las dependencias innecesarias que instala heroku.
+enzyme, jest, liver-server...
+Se van a crear diferentes secciones de dependencias.
+Se usa el cmd
+npm install chalk --dev
+Instala chalk como una dependencia de desarrollo
+En package se observa que se agrega en la sección devDependencies.
+Chalk es solo de ejemplo.
+Se pasan enzyme y enzyme to json a la nueva sección.
+jest
+
 
 
