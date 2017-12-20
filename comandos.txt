@@ -194,6 +194,10 @@ En package se observa que se agrega en la sección devDependencies.
 Chalk es solo de ejemplo.
 Se pasan enzyme y enzyme to json a la nueva sección.
 jest
+Se borran los node_modules y se instalan con
+npm install --production
+para especificar solamente lo necesario para producción.
+Luego de comprobar la diferencia,se instala de nuevo todo.
 
 
 
