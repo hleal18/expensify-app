@@ -9,6 +9,9 @@ const app = express();
 const path = require('path');
 const publicPath = path.join(__dirname, '..', 'public');
 
+//Puerto que se obtiene de heroku en caso de que se esté desplegando.
+const port = process.env.PORT || 3000;
+
 //Se le indica el middleware (algo que se ejecuta con cada petición).
 app.use(express.static(publicPath));
 
@@ -23,7 +26,8 @@ app.get('*', (req, res) => {
 //Se configura la incialización del servidor.
 //Recibe el puerto y un callback que se acciona cuando el servidor se
 //conecta.
-app.listen(3000, () => {
+//El puerto se adapta para heroku que provee una dinámica.
+app.listen(port, () => {
     console.log('Server is up');
 });
 

@@ -171,4 +171,17 @@ Despues de configurar el origin.
 -u asocia el codigo local con el flujo de subida de github.
 git push -u origin master
 
+Para desplegar la aplicación en heroku se instala el cli desde la página.
+Se corren los siguientes comandos para comprobar la versión, iniciar sesión
+y subir la app.
+heroku --version
+heroku create expensify-app-18 **Poner el nombre de la app**
+Esto crea la página y tambien pone un nuevo repo git remoto.
+Hay que indicarle como manejar la app (el express).
+Se agrega un start script para heroku server.
+Se le debe indicar como ejecutar webpack.
+heroku-postbuild : "npm run build:prod"
+Se modifica el gitignore.
+
+
 
