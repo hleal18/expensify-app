@@ -198,6 +198,19 @@ Se borran los node_modules y se instalan con
 npm install --production
 para especificar solamente lo necesario para producción.
 Luego de comprobar la diferencia,se instala de nuevo todo.
+Se suben los cambios a github y a heroku.
+
+Workflow para un nuevo feature al querer desplegar las nuevas características.
+Se comprueban los test.
+Se realiza la modificación a los componentes a renderizar.
+Se comprueban los test y se actualizan si es necesario.
+Se importan una libreria para formatear monedas. numeralJS.
+Se realiza una nueva modificación al componente.
+Se actualizan las pruebas.
+
+
+
+
 
 
 
