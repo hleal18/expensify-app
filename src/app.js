@@ -10,6 +10,8 @@ import { setTimeout } from 'timers';
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
+import getExpensesTotal from './selectors/expense-total';
+import expenses from './tests/fixtures/expenses';
 
 const store = configureStore();
 
@@ -19,6 +21,9 @@ const jsx = (
     <Provider store={store}>
         <AppRouter />
     </Provider>
-)
+);
+
+console.log('Total: ' + getExpensesTotal([]));
+
 
 ReactDOM.render(jsx, document.getElementById('app'));
