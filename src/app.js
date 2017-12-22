@@ -23,7 +23,5 @@ const jsx = (
     </Provider>
 );
 
-console.log('Total: ' + getExpensesTotal([]));
-
 
 ReactDOM.render(jsx, document.getElementById('app'));
