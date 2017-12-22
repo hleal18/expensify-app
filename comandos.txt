@@ -208,6 +208,14 @@ Se importan una libreria para formatear monedas. numeralJS.
 Se realiza una nueva modificación al componente.
 Se actualizan las pruebas.
 
+Se va a proceder a usar los servicios de firebase.
+Realizar el registro.
+Ir al docs.
+Se va a trabajar con la base de datos y el Auth.
+La base de datos tiene un inciso Rules que define
+quien escribe o consulta la base de datos.
+Allí, ambas opciones se definen como true. Son públicas, no requiere autenticación
+para leer oe scribir en ellas, es una opción momentánea.
 
 
 

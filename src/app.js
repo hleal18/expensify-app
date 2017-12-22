@@ -12,6 +12,7 @@ import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
 import getExpensesTotal from './selectors/expense-total';
 import expenses from './tests/fixtures/expenses';
+import './firebase/firebase';
 
 const store = configureStore();
 
