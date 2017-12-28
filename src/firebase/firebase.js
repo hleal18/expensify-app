@@ -22,12 +22,39 @@ firebase.initializeApp(config);
 //es correcta.
 const database = firebase.database();
 
+const expenses = [{
+    description: 'Coffe',
+    note: 'nothing to say',
+    amount: '35000',
+    createdAt: 0
+},{
+    description: 'Chicken at diner',
+    note: 'Really expensive',
+    amount: '50000',
+    createdAt: 103548560
+},{
+    description: 'Bills',
+    note: 'The cheaper bill of the month ever had',
+    amount: '89000',
+    createdAt: -5000
+}];
+
+database.ref('expenses').push(expenses[0]);
+database.ref('expenses').push(expenses[1]);
+database.ref('expenses').push(expenses[2]);
+
+// database.ref('notes/-L1UTHehXHPkSHf__sDV').remove();
+
+// database.ref('notes/-L1UTHehXHPkSHf__sDV').update({
+//     body: 'Buy food'
+// });
+
 //Push crea una nueva propiedad con un id generado.
 //Ese objeto contiene el title y body asignados.
-database.ref('notes').push({
-    title: 'Course topics',
-    body: 'React Native, Angular, Python'
-});
+// database.ref('notes').push({
+//     title: 'Course topics',
+//     body: 'React Native, Angular, Python'
+// });
 
 //ARRAYS EN FIREBASE
 
