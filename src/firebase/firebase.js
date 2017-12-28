@@ -22,12 +22,51 @@ firebase.initializeApp(config);
 //es correcta.
 const database = firebase.database();
 
+//Push crea una nueva propiedad con un id generado.
+//Ese objeto contiene el title y body asignados.
+database.ref('notes').push({
+    title: 'Course topics',
+    body: 'React Native, Angular, Python'
+});
+
+//ARRAYS EN FIREBASE
+
+// //Alternativa al usar arrays en firebase.
+// //El id es un objeto que contiene el title y el body.
+// const firebaseNotes = {
+//     notes: {
+//         apijasdf: {
+//             title: 'First note!',
+//             body: 'This is my note'
+//         },
+//         apijasdfpoijwe: {
+//             title: 'Another note',
+//             body: 'This is my note'
+//         }
+//     }
+// };
+
+// //Firebase no trabaja con arrays. Los arrays los estructura en objetos.
+// const notes = [{
+//     id: '12',
+//     title: 'First note!',
+//     body: 'This is my note'
+// },{
+//     id: '761ase',
+//     title: 'Another note',
+//     body: 'This is my note'
+// }];
+
+// database.ref('notes').set(notes);
+
+
+
 //LECTURAS A LA BASE DE DATOS
 
-const onValueChange = database.ref().on('value', (snapshot) => {
-    const val = snapshot.val();
-    console.log(`${val.name} is a ${val.job.title} at ${val.job.company}`);
-});
+// const onValueChange = database.ref().on('value', (snapshot) => {
+//     const val = snapshot.val();
+//     console.log(`${val.name} is a ${val.job.title} at ${val.job.company}`);
+// });
 
 //once obtiene los datos una sola vez.
 //Todos los datos de la base de datos.
