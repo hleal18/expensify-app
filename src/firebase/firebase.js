@@ -33,46 +33,20 @@ database.ref().set({
         country: 'Colombia'
     }
 }).then(() => {
-    //Cuando la operación es exitosa, se muestra el data is saved.
     console.log('Data is saved.');
 }).catch((e) => {
-    //Cuando falla, por ejemplo si no posee permisos, se muestra la información del error
-    //por medio de la consola y no como un error de javascript.
     console.log('This failed. ', e);;
 });
 
-//Al pasarle null como parámetro, se comporta como remove.
-// database.ref('isSingle').set(null);
-
-//Al realizar set, se ponen los datos en la bd, sin importar los que ya estaban guardados.
-//Es decir, solo se mostrará This is my data.
-//database.ref().set('This is my data');
-
-//Cuando se quiere actualizar un dato, se pone un parámetro a ref.
-//especificando que parte de la bd se desea actualizar.
-// database.ref('age').set(23);
-//Para referenciar un campo de un objeto
-// database.ref('location/city').set('New York');
-
-//Se añade un nuevo campo a la raíz de la BD.
-// database.ref('attributes').set({
-//     height: 163,
-//     weight: 43
-// }).then(() => {
-//     console.log('Second set call worked.');
-// }).catch((e) => {
-//     console.log('Things didnt work for the second error ', e);
-// });
-//Se puede usar lo siguiente, o el anterior.
-// database.ref().update({
-//     attributes: {
-//         height: 162,
-//         weigth: 43
-//     }
-// });
-
-//Las consultas anteriores son asíncronas. No se ejecutan de forma secuencial debido a la tarea
-//que deben realizar para gestionar operaciones con el servidor.
+//Se usa update para actualizar muchos datos en una invocación.
+database.ref().update({
+    name: 'Mike',
+    age:29,
+    //Tambien se pueden agregar nuevos campos
+    job: 'Software developer',
+    //Se remueve el atributo isSingle
+    isSingle: null
+});
 
 //Se remueve el atributo isSingle
 // database.ref('/isSingle').remove().then(() => {
