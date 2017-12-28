@@ -27,7 +27,7 @@ const database = firebase.database();
 database.ref().set({
     name: 'Humberto',
     age: 19,
-    isSingle: true,
+    job: 'Software developer',
     location: {
         city: 'Cartagena',
         country: 'Colombia'
@@ -39,13 +39,11 @@ database.ref().set({
 });
 
 //Se usa update para actualizar muchos datos en una invocación.
+//Solo actualiza al nivel raíz. Si se hace a algo anidado, no funcionará como se espera.
 database.ref().update({
-    name: 'Mike',
-    age:29,
-    //Tambien se pueden agregar nuevos campos
-    job: 'Software developer',
-    //Se remueve el atributo isSingle
-    isSingle: null
+    job: 'Manager',
+    //Para modificar atributo anidado, se usa la ruta.
+    'location/city': 'Boston'
 });
 
 //Se remueve el atributo isSingle
