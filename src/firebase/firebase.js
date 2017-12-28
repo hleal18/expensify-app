@@ -32,6 +32,13 @@ database.ref().set({
         city: 'Cartagena',
         country: 'Colombia'
     }
+}).then(() => {
+    //Cuando la operación es exitosa, se muestra el data is saved.
+    console.log('Data is saved.');
+}).catch((e) => {
+    //Cuando falla, por ejemplo si no posee permisos, se muestra la información del error
+    //por medio de la consola y no como un error de javascript.
+    console.log('This failed. ', e);;
 });
 
 //Al realizar set, se ponen los datos en la bd, sin importar los que ya estaban guardados.
@@ -40,14 +47,18 @@ database.ref().set({
 
 //Cuando se quiere actualizar un dato, se pone un parámetro a ref.
 //especificando que parte de la bd se desea actualizar.
-database.ref('age').set(23);
+// database.ref('age').set(23);
 //Para referenciar un campo de un objeto
-database.ref('location/city').set('New York');
+// database.ref('location/city').set('New York');
 
 //Se añade un nuevo campo a la raíz de la BD.
 database.ref('attributes').set({
     height: 163,
     weight: 43
+}).then(() => {
+    console.log('Second set call worked.');
+}).catch((e) => {
+    console.log('Things didnt work for the second error ', e);
 });
 //Se puede usar lo siguiente, o el anterior.
 // database.ref().update({
