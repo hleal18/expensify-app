@@ -24,30 +24,10 @@ const database = firebase.database();
 
 //LECTURAS A LA BASE DE DATOS
 
-//Si se quieren notificaciones de cambios.
-//se usa on, para escuchar los posibles cambios.
-//La funcion callback se ejecuta cada vez que hay cambios. 
 const onValueChange = database.ref().on('value', (snapshot) => {
-    console.log(snapshot.val());
-}, (e) => {
-    console.log('Error with data fetching', e);
+    const val = snapshot.val();
+    console.log(`${val.name} is a ${val.job.title} at ${val.job.company}`);
 });
-
-//Se prueba que 3.5s el callback se ejecuta de nuevo.
-setTimeout(() => {
-    database.ref('age').set(29);
-}, 3500);
-
-//Se desuscribe de todas las suscripciones en firebase.
-setTimeout(() => {
-    //Se desuscribe de onValueChange
-    database.ref().off(onValueChange);
-}, 7000);
-
-setTimeout(() => {
-    database.ref('age').set(30);
-}, 10500);
-
 
 //once obtiene los datos una sola vez.
 //Todos los datos de la base de datos.
