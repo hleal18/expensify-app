@@ -41,6 +41,9 @@ database.ref().set({
     console.log('This failed. ', e);;
 });
 
+//Al pasarle null como parámetro, se comporta como remove.
+// database.ref('isSingle').set(null);
+
 //Al realizar set, se ponen los datos en la bd, sin importar los que ya estaban guardados.
 //Es decir, solo se mostrará This is my data.
 //database.ref().set('This is my data');
@@ -52,14 +55,14 @@ database.ref().set({
 // database.ref('location/city').set('New York');
 
 //Se añade un nuevo campo a la raíz de la BD.
-database.ref('attributes').set({
-    height: 163,
-    weight: 43
-}).then(() => {
-    console.log('Second set call worked.');
-}).catch((e) => {
-    console.log('Things didnt work for the second error ', e);
-});
+// database.ref('attributes').set({
+//     height: 163,
+//     weight: 43
+// }).then(() => {
+//     console.log('Second set call worked.');
+// }).catch((e) => {
+//     console.log('Things didnt work for the second error ', e);
+// });
 //Se puede usar lo siguiente, o el anterior.
 // database.ref().update({
 //     attributes: {
@@ -70,4 +73,10 @@ database.ref('attributes').set({
 
 //Las consultas anteriores son asíncronas. No se ejecutan de forma secuencial debido a la tarea
 //que deben realizar para gestionar operaciones con el servidor.
-console.log('I made a request to change the data');
+
+//Se remueve el atributo isSingle
+// database.ref('/isSingle').remove().then(() => {
+//     console.log('The attirbute was succesfuly removed');
+// }).catch((e) => {
+//     console.log('There was an error: ' + e);
+// });
