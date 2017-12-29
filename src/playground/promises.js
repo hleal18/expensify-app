@@ -22,6 +22,13 @@ promise.then((data) => {
     console.log('1', data);
     //Debido a que al usar reject se lanza un error de javascript, se atrapa con catch.
     //y así, manejar un error correctamente.
+    //Se prueban los promise chaining, agregando otro 'then' al anterior.
+    //Este recibe el dato de retorno del primer 'then'.
+    return 'some data';
+}).then((str) => {
+    //Se tiene acceso a str obtenido del then anterior.
+    //El segundo then se acciona despues del primero.
+    console.log('does this runs?', str);
 }).catch((error) => {
     console.log('error: ', error);
 });

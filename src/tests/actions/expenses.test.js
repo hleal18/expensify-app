@@ -1,4 +1,4 @@
-import { startAddExpense, editExpense, removeExpense } from '../../actions/expenses';
+import { startAddExpense, editExpense, removeExpense, addExpense } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -40,7 +40,10 @@ test('should set up add expense action object with provided values', () => {
 
 //Se busca usar mock store, para comprobar los datos guardados.
 //Se usa redux-mock-store para testear
-test('should add expense to database and store', () => {
+//Se le agrega el parámetro done, que se invoca en algún momento
+//que indica hasta que momento se considera que el proceso habrá 
+//finalizado.
+test('should add expense to database and store', (done) => {
     const store = createMockStore({});
     const expenseData = {
         description: 'Mouse',
@@ -49,8 +52,21 @@ test('should add expense to database and store', () => {
         createdAt: 1000
     };
 
-    //
-    store.dispatch(startAddExpense(expenseData))
+    //Debido a que se esta testeando un código asíncrono, que cuando finalice
+    //se podrá comprobar el resultado final.
+    //Se usará una forma especial de promises.
+    //Se usa Promise Chaining. Se aclara en las promises.js de playground.
+    //Se agrega un return a la instruccion que agrega los datos a la bd. Debido a que esa
+    //es la línea que se quiere evaluar.
+    //De esta forma, a partir del then de startAddExpense, se puede encadenar otro then de
+    //acuerdo a lo que se retorna.
+    //Para que jest las evalue completamente, se le debe indicar que es una instrucción
+    //asíncronica.
+    store.dispatch(startAddExpense(expenseData)).then(() => {
+        expect(1).toBe(1);
+        //Evalua correctamente la instrucción asíncronica.
+        done();
+    });
 });
 
 test('should add expense with defaults to database and store', () => {
