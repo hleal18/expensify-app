@@ -22,26 +22,78 @@ firebase.initializeApp(config);
 //es correcta.
 const database = firebase.database();
 
-const expenses = [{
-    description: 'Coffe',
-    note: 'nothing to say',
-    amount: '35000',
-    createdAt: 0
-},{
-    description: 'Chicken at diner',
-    note: 'Really expensive',
-    amount: '50000',
-    createdAt: 103548560
-},{
-    description: 'Bills',
-    note: 'The cheaper bill of the month ever had',
-    amount: '89000',
-    createdAt: -5000
-}];
+//EVENTO
+// child_removed, cuando un child es removido
+//No se ve el cambio en consola hasta que un item es borrado.
+database.ref('expenses').on('child_removed', (snapshot) => {
+    //Imprime los datos del item borrado.
+    console.log(snapshot.key, snapshot.val());
+});
 
-database.ref('expenses').push(expenses[0]);
-database.ref('expenses').push(expenses[1]);
-database.ref('expenses').push(expenses[2]);
+// child_changed, cuando se actualizan o modifican algunos de los expenses.
+database.ref('expenses').on('child_changed', (snapshot) => {
+    console.log(snapshot.key, snapshot.val());
+});
+
+// child_added, cuando se agrega un item (expense)
+//Tambien se invoca con los que ya existen.
+database.ref('expenses').on('child_added', (snapshot) => {
+    console.log(snapshot.key, snapshot.val());
+});
+
+//Se busca transformar los valores de expenses en arreglos para que redux
+//pueda manipularlos como se ha programado desde un inicio.
+// database.ref('expenses')
+//     .once('value')
+//     .then((snapshot) => {
+//         const expenses = [];
+
+//         //Devuelve un child. Un childSnapshot que corresponde a un expense.
+//         //Agrega a cada espacio del array, un expense del firebase con un id.
+//         snapshot.forEach((childSnapshot) => {
+//             expenses.push({
+//                 id: childSnapshot.key,
+//                 ...childSnapshot.val()
+//             });
+//         });
+
+//         console.log(expenses);
+//     });
+
+//El mismo algoritmo anterior pero con suscripción a cambios.
+// database.ref('expenses').on('value', (snapshot) => {
+//     const expenses = [];
+
+//     snapshot.forEach((childSnapshot) => {
+//         expenses.push({
+//             id: childSnapshot.key,
+//             ...childSnapshot.val()
+//         });
+//     });
+
+//     console.log(expenses);
+// });
+
+// const expenses = [{
+//     description: 'Coffe',
+//     note: 'nothing to say',
+//     amount: '35000',
+//     createdAt: 0
+// },{
+//     description: 'Chicken at diner',
+//     note: 'Really expensive',
+//     amount: '50000',
+//     createdAt: 103548560
+// },{
+//     description: 'Bills',
+//     note: 'The cheaper bill of the month ever had',
+//     amount: '89000',
+//     createdAt: -5000
+// }];
+
+// database.ref('expenses').push(expenses[0]);
+// database.ref('expenses').push(expenses[1]);
+// database.ref('expenses').push(expenses[2]);
 
 // database.ref('notes/-L1UTHehXHPkSHf__sDV').remove();
 
