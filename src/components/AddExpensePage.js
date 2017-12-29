@@ -1,7 +1,7 @@
 import React from 'react';
 import ExpenseForm from './ExpenseForm';
 import { connect } from 'react-redux';
-import { addExpense } from '../actions/expenses';
+import { startAddExpense } from '../actions/expenses';
 
 //Se reutiliza ExpenseForm y se conecta con connect de redux
 //Se pasa a una clase
@@ -15,7 +15,7 @@ export class AddExpensePage extends React.Component {
         //props.dispatch(addExpense(expense));
         //Se agrega el prop que está enlazado con la nueva
         //funcion.
-        this.props.addExpense(expense);
+        this.props.startAddExpense(expense);
         //Lo provee router. Permite redireccionar cuando se suban los datos.
         this.props.history.push('/');
     }
@@ -36,7 +36,7 @@ export class AddExpensePage extends React.Component {
 //Establece la invocación del dispatch, ahora accesible
 //desde las props del componente.
 const mapDispatchToProps = (dispatch) => ({
-    addExpense: (expense) => dispatch(addExpense(expense))
+    startAddExpense: (expense) => dispatch(startAddExpense(expense))
 });
 
 export default connect(undefined, mapDispatchToProps)(AddExpensePage);
