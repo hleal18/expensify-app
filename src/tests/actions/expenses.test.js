@@ -2,6 +2,7 @@ import { startAddExpense, editExpense, removeExpense, addExpense } from '../../a
 import expenses from '../fixtures/expenses';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import database from '../../firebase/firebase';
 
 //Se le pasa un array de middlewares.
 const createMockStore = configureMockStore([thunk]);
@@ -63,14 +64,55 @@ test('should add expense to database and store', (done) => {
     //Para que jest las evalue completamente, se le debe indicar que es una instrucción
     //asíncronica.
     store.dispatch(startAddExpense(expenseData)).then(() => {
-        expect(1).toBe(1);
+        //Se va a evaluar que se haga el dispatch de la acción correcta
+        //en el store. Se aprovecha el uso de redux-mock-store.
+        const actions = store.getActions();
+        //Se evalua que la acción invocada sea ADD_EXPENSE con el expense
+        //correcto.
+        expect(actions[0]).toEqual({
+            type: 'ADD_EXPENSE',
+            expense: {
+                id: expect.any(String),
+                ...expenseData
+            }
+        });
+        //Tambien se va a testear que los datos hayan sido escritos correctamente
+        //por lo cual se buscará consultarla.
+        return database.ref(`expenses/${actions[0].expense.id}`).once('value');
+
+        //Evalua correctamente la instrucción asíncronica.
+        //done();
+    }).then((snapshot) => {
+        expect(snapshot.val()).toEqual(expenseData);
         //Evalua correctamente la instrucción asíncronica.
         done();
     });
 });
 
-test('should add expense with defaults to database and store', () => {
-
+test('should add expense with defaults to database and store', (done) => {
+    const store = createMockStore({});
+    const expenseDefaults = {
+        description: '',
+        note: '',
+        amount: 0,
+        createdAt: 0
+    };
+    
+    store.dispatch(startAddExpense({})).then(() => {        
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+            type: 'ADD_EXPENSE',
+            expense: {
+                id: expect.any(String),
+                ...expenseDefaults
+            }
+        });
+        
+        return database.ref(`expenses/${actions[0].expense.id}`).once('value');        
+    }).then((snapshot) => {
+        expect(snapshot.val()).toEqual(expenseDefaults);
+        done();
+    });
 });
 
 //Una prueba unitaria para los valores por defecto, cuando no se provee un objeto

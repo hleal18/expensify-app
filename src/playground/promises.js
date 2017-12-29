@@ -5,9 +5,12 @@
 const promise = new Promise((resolve, reject) => {
     //Se ejecuta el resolve despues de 1.5s, para observar el comportamiento.
     setTimeout(() => {
-        // resolve('This is my resolved data');
-        // resolve('This is my other resolved data');
-        reject('Something went wrong!');
+        resolve({
+            name: 'Humberto',
+            age: 19
+        });
+
+        // reject('Something went wrong!');
     }, 1500);
 });
 //Normalmente se usaran promises provistas por API's.
@@ -24,7 +27,14 @@ promise.then((data) => {
     //y así, manejar un error correctamente.
     //Se prueban los promise chaining, agregando otro 'then' al anterior.
     //Este recibe el dato de retorno del primer 'then'.
-    return 'some data';
+    //Se puede retornar una nueva promesa.
+    //Sirve para evitar anidar muchos callbacks con el then (creo).
+    return new Promise((resolve, reject) => {
+        //Se ejecuta el resolve despues de 1.5s, para observar el comportamiento.
+        setTimeout(() => {
+            resolve('This is my other promise.');
+        }, 1500);
+    });
 }).then((str) => {
     //Se tiene acceso a str obtenido del then anterior.
     //El segundo then se acciona despues del primero.
