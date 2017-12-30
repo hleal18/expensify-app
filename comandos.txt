@@ -259,3 +259,5 @@ Se usan las mismas variables de ambiente que hay en .env.development manualmente
 heroku config:set FIREBASE_API_KEY=AIzaSyAnzmR-ZDXfUUI3YH1-IR6OPWtpt6RsXWY FIREBASE_AUTH_DOMAIN=expensify-50a5f.firebaseapp.com FIREBASE_DATABASE_URL=https://expensify-50a5f.firebaseio.com FIREBASE_PROJECT_ID=expensify-50a5f FIREBASE_STORAGE_BUCKET=expensify-50a5f.appspot.com FIREBASE_MESSAGING_SENDER_ID=359905664699
 Para establecer conexión con el repositorio git de heroku desde una nueva pc: heroku git:remote -a expensify-app-18
 
+Se busca el servicio de authetication en firebase, presenta diferentes métodos.
+Con cuenta google, facebook, telefono email/password, etc...

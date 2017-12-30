@@ -3,6 +3,8 @@
 //Es recomendado usar esta sintaxis por firebase.
 import * as firebase from 'firebase';
 import { setTimeout } from 'timers';
+//Se busca un provider para el servicio de autenticacion por medio de google.
+const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
 //El objeto es provisto por firebase.
 const config = {
@@ -22,4 +24,4 @@ firebase.initializeApp(config);
 //es correcta.
 const database = firebase.database();
 
-export { firebase, database as default };
+export { googleAuthProvider, firebase, database as default };

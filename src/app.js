@@ -12,7 +12,7 @@ import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
 import getExpensesTotal from './selectors/expense-total';
 import expenses from './tests/fixtures/expenses';
-import './firebase/firebase';
+import { firebase } from './firebase/firebase';
 
 const store = configureStore();
 
@@ -28,4 +28,16 @@ ReactDOM.render(<p>loading...</p>, document.getElementById('app'));
 
 store.dispatch(startSetExpenses()).then(() => {
     ReactDOM.render(jsx, document.getElementById('app'));
+});
+
+//Se busca rastrear el proceso de cambio de autenticacion.
+firebase.auth().onAuthStateChanged((user) => {
+    //Si hay un user, inició sesión.
+    if(user){
+        console.log('log in');
+    } 
+    //Si no hay, no no hay sesión iniciada.
+    else {
+        console.log('log out');
+    }
 })
