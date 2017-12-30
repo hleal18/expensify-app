@@ -6,12 +6,12 @@ import { setTimeout } from 'timers';
 
 //El objeto es provisto por firebase.
 const config = {
-    apiKey: "AIzaSyAnzmR-ZDXfUUI3YH1-IR6OPWtpt6RsXWY",
-    authDomain: "expensify-50a5f.firebaseapp.com",
-    databaseURL: "https://expensify-50a5f.firebaseio.com",
-    projectId: "expensify-50a5f",
-    storageBucket: "expensify-50a5f.appspot.com",
-    messagingSenderId: "359905664699"
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    databaseURL: process.env.FIREBASE_DATABASE_URL,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID
 };
 
 //Inicializa firebase con la app definida.

@@ -1,8 +1,19 @@
 const path = require('path');
+const webpack = require('webpack');
 //Se usa un plugin de webpack que permita extraer texto del bundle.js
 //para así filtrar los estilos css que se quieren poner en otro archivo.
 //extract-text-webpack-plugin
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+//Comprueba se usa webpack en modo production, test o development.
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+if(process.env.NODE_ENV === 'test'){
+    //Automáticamente busca .env
+    require('dotenv').config({ path: '.env.test' });
+} else if(process.env.NODE_ENV === 'development'){
+    require('dotenv').config({ path: '.env.development' });
+}
 
 //Devuelve la configuración del webpack.
 //Se configura una función debido a que permite ser llamada
@@ -60,7 +71,22 @@ module.exports = (env) => {
             }]
         },
         plugins: [
-            CSSExtract
+            CSSExtract,
+            //Se usa para decidir que env variables pasan al lado del cliente.
+            //Se usa require desde le inicio del archivo para acceder a webpack.            
+            new webpack.DefinePlugin({
+                //Debido a que el uso de este plugin puede ser complicado, hay que agregar
+                //Doble comillas para que la asignación del valor se haga con el valor que contiene
+                //la variable y no el nombre de la variable.
+                //Para ello se usa JSON.stringify que agrega automáticamente esas dobles comillas.
+                'process.env.FIREBASE_API_KEY': JSON.stringify(process.env.FIREBASE_API_KEY),
+                'process.env.FIREBASE_AUTH_DOMAIN': JSON.stringify(process.env.FIREBASE_AUTH_DOMAIN),
+                'process.env.FIREBASE_DATABASE_URL': JSON.stringify(process.env.FIREBASE_DATABASE_URL),
+                'process.env.FIREBASE_PROJECT_ID': JSON.stringify(process.env.FIREBASE_PROJECT_ID),
+                'process.env.FIREBASE_STORAGE_BUCKET': JSON.stringify(process.env.FIREBASE_STORAGE_BUCKET),
+                'process.env.FIREBASE_MESSAGING_SENDER_ID': JSON.stringify(process.env.FIREBASE_MESSAGING_SENDER_ID)
+
+            })
         ],
         //Los source maps, agregan mucho espacio al proyecto.
         //Se busca disminuirlo lo más posible, teniendo en cuenta que

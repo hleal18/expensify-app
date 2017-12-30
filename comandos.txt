@@ -217,8 +217,45 @@ quien escribe o consulta la base de datos.
 Allí, ambas opciones se definen como true. Son públicas, no requiere autenticación
 para leer oe scribir en ellas, es una opción momentánea.
 
+Para montar un servidor de testeo, se montaran alli datos como los fixtures que sirvan
+de insumo para comprobar que la escritura y lectura con el servicio estan funcionando.
+Se debe configurar firebase para indicar si el proceso a realizar es en producción o desarrollo.
+El problema por el cual se ahonda esta alternativa es que cada vez que se ejecutan las pruebas,
+se escriben datos de ejemplo en la BD que se supone va a contener datos de usuario, lo cual no
+no es para nada viable.
+Se busca aprovechar una variable del entorno NODE_ENV para indicar si esta en prod o dev.
+Debido a que la configuracion del script que se pretende modificar no tiene una sola implementación
+compatible con todos los OS, se instala el modulo cross-env.
+npm install --dev cross-env@5.0.5
+Se instala en modo desarrollador.
+Se cambia el script test para que use cross-env y acceda a la variable de ambiente NODE_ENV con el string
+'test'
+Webpack se beneficiará del valor de esta variable y de acuerdo al valor, tomará una configuración 
+de firebase u otra.
+Debido a que el contenido del script para conectarse con firebase es privado, se harán en un archivo a parte
+en conjunto con gitignore para que no hagan parte de futuros commits y se exporte solo lo que se necesite
+y evitar mostrar datos críticos para el ámbito de producción de la app.
+Los archivos son.env.test y .env.development.
+Se crean variables de ambiente en cada uno de esos archivos correspondiendo a los datos para acceder a firebase.
+En el env.test, se conectará a una bd que hará parte de otro proyecto. Solo será dedicada para valores de testeo.
+Se busca leer los datos de las variables desde el webpack config.
+Para facilidad de uso de la tarea anterior se instala un modulo nuevo,
+npm install dotenv@4.0.0
+Despues de configurar las variables de entorno en webpack config y firebase.js
+hay que agrega una instruccion extra a jestconfig en setupFiles.
 
-
-
-
+Se hicieron configuraciones cuando es development y test, para que heroku (production) logre aprovechar las operaciones
+de firebase, hay que manipular sus propias variables de ambiente que ofrece el mismo heroku cli.
+Se corren una serie de comandos que permiten observar el estado y configuración de heroku.
+heroku config
+Si no hay, se agrega una configuración.
+heroku config:set KEY=value
+Crea una variable de ambiente en heroku.
+heroku config
+Ahora muestra la variable de ambiente.
+heroku config:unset KEY
+Quita la env variable.
+Se usan las mismas variables de ambiente que hay en .env.development manualmente en el cli.
+heroku config:set FIREBASE_API_KEY=AIzaSyAnzmR-ZDXfUUI3YH1-IR6OPWtpt6RsXWY FIREBASE_AUTH_DOMAIN=expensify-50a5f.firebaseapp.com FIREBASE_DATABASE_URL=https://expensify-50a5f.firebaseio.com FIREBASE_PROJECT_ID=expensify-50a5f FIREBASE_STORAGE_BUCKET=expensify-50a5f.appspot.com FIREBASE_MESSAGING_SENDER_ID=359905664699
+Para establecer conexión con el repositorio git de heroku desde una nueva pc: heroku git:remote -a expensify-app-18
 
