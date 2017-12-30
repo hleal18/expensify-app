@@ -1,5 +1,6 @@
 import expensesReducer from '../../reducers/expenses';
 import expenses from '../fixtures/expenses';
+import { setExpenses } from '../../actions/expenses';
 
 //Evalua el estado inicial, debe ser un arreglo vacio
 test('should set default state', () => {
@@ -68,4 +69,11 @@ test('should not edit an expense with a not found id', () => {
     };
     const state = expensesReducer(expenses, action);
     expect(state).toEqual(expenses);
+});
+
+//Evalua que se logren poner los expenses que se consulten.
+test('should set expenses', () => {
+    const action = { type: 'SET_EXPENSES', expenses: [expenses[1]] };
+    const state = expensesReducer(expenses, action);
+    expect(state).toEqual([expenses[1]]);
 });

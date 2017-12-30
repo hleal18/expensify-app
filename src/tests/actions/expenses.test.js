@@ -1,4 +1,4 @@
-import { startAddExpense, editExpense, removeExpense, addExpense } from '../../actions/expenses';
+import { startAddExpense, editExpense, removeExpense, addExpense, setExpenses, startSetExpenses } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -6,6 +6,20 @@ import database from '../../firebase/firebase';
 
 //Se le pasa un array de middlewares.
 const createMockStore = configureMockStore([thunk]);
+
+beforeEach((done) => {
+    //Se busca que antes de cada test case, los fixtures de los archivos se guarden firebase
+    //y así ver como se comporta la base de datos.
+    const expensesData = {};
+    expenses.forEach(({ id, description, amount, note, createdAt }) => {
+        //Segun entiendo: se crea un objeto con la id que a la vez es un objeto que contiene
+        //los demas campos.
+        expensesData[id] = { description, amount, note, createdAt };
+    });
+    //Como se pretende correr el beforeEach antes de cada test case, y es un proceso asíncrono,
+    //debe asegurarse que se le indique a jest que es un proceso asíncrono y que espere a que finalice.
+    database.ref('expenses').set(expensesData).then(() => done());
+});
 
 //test case para remover expenses.
 test('should set-up remove expense action object', () => {
@@ -115,18 +129,30 @@ test('should add expense with defaults to database and store', (done) => {
     });
 });
 
-//Una prueba unitaria para los valores por defecto, cuando no se provee un objeto
-//a añadir sino uno por defecto.
-// test('should set up the ad expense action object with default values', () => {
-//     const action = addExpense();
-//     expect(action).toEqual({
-//         type: 'ADD_EXPENSE',
-//         expense: {
-//             description: '',
-//             note: '',
-//             amount: 0,
-//             createdAt: 0,
-//             id: expect.any(String)
-//         }
-//     })
-// });
+test('should set up set expense action object with data', () => {
+    const action = setExpenses(expenses);
+    expect(action).toEqual({
+        type: 'SET_EXPENSES',
+        expenses
+    });
+});
+
+test('should fetch the expenses from firebase', (done) => {
+    //Se crea el store
+    const store = createMockStore({});
+    //Se comprueba que al realizar dispatch, si se tuvo exito, se invocaron las acciones
+    //correctas.
+    store.dispatch(startSetExpenses()).then(() => {
+        //Al tener exito la operacion de la accion, se comprueba si la accion invocada
+        //fue SET_EXPENSES.
+        const actions = store.getActions();
+        //Solo debe haber una accion, con el tipo 'SET_EXPENSES' y los expenses que en un principio
+        //se agregaron, que son los de fixtures (contenidos en el beforeEach).
+        expect(actions[0]).toEqual({
+            type: 'SET_EXPENSES',
+            expenses
+        });
+        //Se le indica que todos es una instrucción asíncronica.
+        done();
+    })
+});

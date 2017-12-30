@@ -46,3 +46,29 @@ export const editExpense = (id, updates) => ({
     updates    
 });
 
+//MANIPULA EL REDUX STORE, OBTIENE LOS EXPENSES
+export const setExpenses = (expenses) => ({
+    type: 'SET_EXPENSES',
+    expenses
+});
+
+//FROMA ASÍNCRONICA DE SET EXPENSES
+export const startSetExpenses = () => {
+    return (dispatch) => {
+        return database.ref('expenses')
+            .once('value')
+            .then((snapshot) => {
+                const expenses = [];
+
+                snapshot.forEach((childSnapshot) => {
+                    expenses.push({
+                        id: childSnapshot.key,
+                        ...childSnapshot.val()
+                    });
+                });
+
+                dispatch(setExpenses(expenses));
+            });
+    };
+};
+
