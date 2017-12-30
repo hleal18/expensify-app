@@ -1,4 +1,4 @@
-import { startAddExpense, editExpense, removeExpense, addExpense, setExpenses, startSetExpenses } from '../../actions/expenses';
+import { startAddExpense, editExpense, removeExpense, addExpense, setExpenses, startSetExpenses, startRemoveExpense } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -29,6 +29,40 @@ test('should set-up remove expense action object', () => {
         type: 'REMOVE_EXPENSE',
         id: '123abc'
     });
+});
+
+//test case para la forma asincronica de remove expense
+test('should remove expenses from firebase', (done) => {
+    const store = createMockStore();
+    store.dispatch(startRemoveExpense(expenses[0]))
+        .then(() => {
+            const actions = store.getActions();
+            expect(actions[0]).toEqual({
+                type: 'REMOVE_EXPENSE',
+                id: expenses[0].id
+            });
+
+            //Retorna un promise que evita se invoque un then en un ambiente anidado.
+            //Se va a testear que los expenses guardados tengan uno menos, el que se
+            //removió.
+            return database.ref('expenses').once('value');
+        }).then((snapshot) => {
+            expect(snapshot.val()).toEqual([
+                {
+                    description: expenses[1].description,
+                    note: expenses[1].note,
+                    amount: expenses[1].amount,
+                    createdAt: expenses[1].createdAt
+                },{
+                    description: expenses[2].description,
+                    note: expenses[2].note,
+                    amount: expenses[2].amount,
+                    createdAt: expenses[2].createdAt
+                }
+            ]);
+            done();
+        });
+       
 });
 
 //test case para editar expenses
@@ -154,5 +188,6 @@ test('should fetch the expenses from firebase', (done) => {
         });
         //Se le indica que todos es una instrucción asíncronica.
         done();
-    })
+    });
 });
+
