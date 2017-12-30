@@ -46,15 +46,6 @@ export const startRemoveExpense = ({ id }) => {
             .then(() => {
                 dispatch(removeExpense({ id }));
             });
-        // database.ref('expenses')
-        //     .once('value')
-        //     .then((snapshot) => {
-        //         snapshot.forEach((childSnapshot) => {
-        //             if(id === childSnapshot.key){
-
-        //             }
-        //         })
-        //     })
     };    
 };
 
