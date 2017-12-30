@@ -1,4 +1,13 @@
-import { startAddExpense, editExpense, removeExpense, addExpense, setExpenses, startSetExpenses, startRemoveExpense } from '../../actions/expenses';
+import { 
+    startAddExpense, 
+    editExpense, 
+    removeExpense, 
+    addExpense, 
+    setExpenses, 
+    startSetExpenses, 
+    startRemoveExpense,
+    startEditExpense
+} from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -32,7 +41,7 @@ test('should set-up remove expense action object', () => {
 });
 
 //test case para la forma asincronica de remove expense
-test('should remove expenses from firebase', (done) => {
+test('should remove expense from firebase', (done) => {
     const store = createMockStore();
     store.dispatch(startRemoveExpense(expenses[0])).then(() => {
         //Se testea que la acción correcta fue despachada hacia el store.
@@ -52,6 +61,9 @@ test('should remove expenses from firebase', (done) => {
         //regresa un objeto, que al invocar exists, dice si existe o no
         //se espera que sea false, debido a que no existe.
         expect(snapshot.child('1').exists()).toBe(false);
+        //TAmbien, como regresa null, se compara con toBeFalsy
+        //(a la autor le funcionó, a mí no).
+        //expect(snapshot.child('1')).toBeFalsy();
         done();
     });          
 });
@@ -67,6 +79,51 @@ test('should set up edit expense action object', () => {
         }
     });
 });
+
+//Test case para comprobar la acción asincronica startEditExpense
+//ejecute la accion correcta en el store y haga las modificaciones
+//a firebase.
+test('should edit expense from firebase', (done) => {
+    //Se crea el mock store que guardará las acciones.
+    const store = createMockStore();
+    //Los datos a actualizar en firebase.
+    const modExpense = {
+        description: 'Expense modified',
+        note: 'Note modified',
+        amount: 2064
+    };
+    //Se despacha la accion asincronica en el store.
+    //Se encadena la promesa que retorna con un then.
+    store.dispatch(startEditExpense(expenses[2].id, modExpense))
+        //Se captura las acciones llamadas y se comprueba que fue
+        //EDIT_EXPENSE, con el id y updates con los cuale fue llamado
+        //retorna una promesa correspondiente a la ejecución asincrona
+        //de una consulta al expense modificado.
+        .then(() => {
+            const action = store.getActions();
+            expect(action[0]).toEqual({
+                type: 'EDIT_EXPENSE',
+                id: expenses[2].id,
+                updates: modExpense
+            });
+
+            return database.ref('expenses').once('value');
+            //Se encadena la promesa retornada y se recibe el snapshot.
+            //se aprovecha para consultar el child a partir del id
+            //del expense modificado y los valores que contiene.
+            //El expense debe se igual a los campos modificados y a los que
+            //no lo fueron del objeto original.
+        }).then((snapshot) => {
+            expect(snapshot.child(expenses[2].id).val()).toEqual({
+                description: modExpense.description,
+                note: modExpense.note,
+                amount: modExpense.amount,
+                createdAt: expenses[2].createdAt
+            });
+            //Se le indicaa jest que es una instruccion asincronica.
+            done();
+        })
+})
 
 //Test case para agregar un expense con datos provistos.
 test('should set up add expense action object with provided values', () => {

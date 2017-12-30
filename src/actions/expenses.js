@@ -39,13 +39,12 @@ export const removeExpense = ({ id } = {}) => ({
     id
 });
 
+//FUNCION ASINCRONICA REMOVE_EXPENSE
 export const startRemoveExpense = ({ id }) => {
     return (dispatch) => {
-        return database.ref(`expenses/${id}`)
-            .remove()
-            .then(() => {
-                dispatch(removeExpense({ id }));
-            });
+        return database.ref(`expenses/${id}`).remove().then(() => {
+            dispatch(removeExpense({ id }));
+        });
     };    
 };
 
@@ -55,6 +54,15 @@ export const editExpense = (id, updates) => ({
     id,
     updates    
 });
+
+//FUNCION ASINCRONICA EDIT_EXPENSE
+export const startEditExpense = (id, update) => {
+    return (dispatch) => {
+        return database.ref(`expenses/${id}`).update(update).then(() => {
+            dispatch(editExpense(id, update));
+        });
+    };
+};
 
 //MANIPULA EL REDUX STORE, OBTIENE LOS EXPENSES
 export const setExpenses = (expenses) => ({
