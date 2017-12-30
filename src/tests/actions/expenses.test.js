@@ -34,35 +34,26 @@ test('should set-up remove expense action object', () => {
 //test case para la forma asincronica de remove expense
 test('should remove expenses from firebase', (done) => {
     const store = createMockStore();
-    store.dispatch(startRemoveExpense(expenses[0]))
-        .then(() => {
-            const actions = store.getActions();
-            expect(actions[0]).toEqual({
-                type: 'REMOVE_EXPENSE',
-                id: expenses[0].id
-            });
-
-            //Retorna un promise que evita se invoque un then en un ambiente anidado.
-            //Se va a testear que los expenses guardados tengan uno menos, el que se
-            //removió.
-            return database.ref('expenses').once('value');
-        }).then((snapshot) => {
-            expect(snapshot.val()).toEqual([
-                {
-                    description: expenses[1].description,
-                    note: expenses[1].note,
-                    amount: expenses[1].amount,
-                    createdAt: expenses[1].createdAt
-                },{
-                    description: expenses[2].description,
-                    note: expenses[2].note,
-                    amount: expenses[2].amount,
-                    createdAt: expenses[2].createdAt
-                }
-            ]);
-            done();
+    store.dispatch(startRemoveExpense(expenses[0])).then(() => {
+        //Se testea que la acción correcta fue despachada hacia el store.
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+            type: 'REMOVE_EXPENSE',
+            id: expenses[0].id
         });
-       
+
+        //Retorna un promise que evita se invoque un then en un ambiente anidado.
+        //Se va a testear que los expenses guardados tengan uno menos, el que se
+        //removió.
+        return database.ref('expenses').once('value');       
+    }).then((snapshot) => {
+        //Se comprueba que no exista el expense con id '1'
+        //se usa child para buscar el child a partir del id='1'
+        //regresa un objeto, que al invocar exists, dice si existe o no
+        //se espera que sea false, debido a que no existe.
+        expect(snapshot.child('1').exists()).toBe(false);
+        done();
+    });          
 });
 
 //test case para editar expenses
