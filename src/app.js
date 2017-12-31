@@ -1,7 +1,7 @@
 import React, { Children } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import AppRouter from "./routers/AppRouter";
+import AppRouter, { history } from "./routers/AppRouter";
 import configureStore from './store/configureStore';
 import { startSetExpenses } from './actions/expenses';
 import { setTextFilter } from './actions/filters';
@@ -23,12 +23,20 @@ const jsx = (
         <AppRouter />
     </Provider>
 );
+//Sirve para evitar renderizar toda la app el doble de veces
+//situación que se puede dar cuando se inicia o se cierra sesión.
+let hasRendered = false;
+const renderApp = () => {
+    //Si no se ha renderizado, se renderiza.
+    if(!hasRendered) {
+        ReactDOM.render(jsx, document.getElementById('app'));
+        hasRendered = true;
+    }
+};
 
 ReactDOM.render(<p>loading...</p>, document.getElementById('app'));
 
-store.dispatch(startSetExpenses()).then(() => {
-    ReactDOM.render(jsx, document.getElementById('app'));
-});
+
 
 //Se busca rastrear el proceso de cambio de autenticacion.
 //Dependiendo del cambio, gracias al action de auth.js, se pueden
@@ -36,10 +44,22 @@ store.dispatch(startSetExpenses()).then(() => {
 firebase.auth().onAuthStateChanged((user) => {
     //Si hay un user, inició sesión.
     if(user){
-        console.log('log in');
+        //Cuando se inicie sesión, se renderiza la app con los datos del user.
+        store.dispatch(startSetExpenses()).then(() => {
+            //Se renderiza la app.
+            renderApp();
+            //Como el onAuthStateChanged se ejecuta a cada rato, solo se redirige
+            //al usuario al dashboard cuando este se encuentra en la LoginPage
+            //que corresponde a '/'.
+            if (history.location.pathname === '/') {
+                history.push('/dashboard');
+            }
+        });
     } 
     //Si no hay, no no hay sesión iniciada.
     else {
-        console.log('log out');
+        renderApp();
+        //Cuando se cierre sesion se redirige a la LoginPage.
+        history.push('/');
     }
 })
