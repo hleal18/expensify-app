@@ -266,3 +266,6 @@ Para acceder al history del browser en un ambiente que no sea un componente Rout
 se requiere instalas un nuevo módulo que el react-router utiliza detrás de escenas,
 npm history
 De esta forma, se podrá acceder al history y manipularlo sin necesidad de estar en un ambiente con un componente que haga alusión a react-router.
+
+Debido a que se requiere garantizar el seguro acceso a las diferentes páginas al usuario correcto, se infiere que se debe realizar un
+nuevo reducer debido a que se implican nuevos campos guardados en el store que se lleven a cabo.

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import AppRouter, { history } from "./routers/AppRouter";
 import configureStore from './store/configureStore';
 import { startSetExpenses } from './actions/expenses';
-import { setTextFilter } from './actions/filters';
+import { login, logout } from './actions/auth';
 import getVisibleExpenses from './selectors/expenses';
 import { setTimeout } from 'timers';
 import 'normalize.css/normalize.css';
@@ -44,11 +44,14 @@ ReactDOM.render(<p>loading...</p>, document.getElementById('app'));
 firebase.auth().onAuthStateChanged((user) => {
     //Si hay un user, inició sesión.
     if(user){
+        //Se despacha el inicio de sesion modificar el redux store
+        store.dispatch(login(user.uid));
         //Cuando se inicie sesión, se renderiza la app con los datos del user.
         store.dispatch(startSetExpenses()).then(() => {
             //Se renderiza la app.
             renderApp();
-            //Como el onAuthStateChanged se ejecuta a cada rato, solo se redirige
+            //Como el onAuthStateChanged se ejecuta a cada rato (actualizar ventana), 
+            //solo se redirige
             //al usuario al dashboard cuando este se encuentra en la LoginPage
             //que corresponde a '/'.
             if (history.location.pathname === '/') {
@@ -58,6 +61,8 @@ firebase.auth().onAuthStateChanged((user) => {
     } 
     //Si no hay, no no hay sesión iniciada.
     else {
+        //Se despacha el cierre de la sesion para modificar el redux store.
+        store.dispatch(logout());
         renderApp();
         //Cuando se cierre sesion se redirige a la LoginPage.
         history.push('/');

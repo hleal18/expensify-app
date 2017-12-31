@@ -4,6 +4,11 @@
 
 import { firebase, googleAuthProvider } from '../firebase/firebase';
 
+//Acción para el inicio de sesion.
+export const login = (uid) => ({
+    type: 'LOGIN',
+    uid
+});
 //Funcion asincrona para iniciar el proceso de inicio de sesion.
 export const startLogin = () => {
     return () => {
@@ -17,6 +22,10 @@ export const startLogin = () => {
     };
 };
 
+//Acción para el cierre de la sesión.
+export const logout = () => ({
+    type: 'LOGOUT'
+});
 //Funcion asincrona para el proceso de cerrar sesion.
 export const startLogout = () => {
     return () => {
