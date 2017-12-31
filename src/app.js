@@ -31,6 +31,8 @@ store.dispatch(startSetExpenses()).then(() => {
 });
 
 //Se busca rastrear el proceso de cambio de autenticacion.
+//Dependiendo del cambio, gracias al action de auth.js, se pueden
+//realizar procedimientos cuando se inicicie o se cierre la sesión.
 firebase.auth().onAuthStateChanged((user) => {
     //Si hay un user, inició sesión.
     if(user){

@@ -261,3 +261,8 @@ Para establecer conexión con el repositorio git de heroku desde una nueva pc: h
 
 Se busca el servicio de authetication en firebase, presenta diferentes métodos.
 Con cuenta google, facebook, telefono email/password, etc...
+
+Para acceder al history del browser en un ambiente que no sea un componente Route (gracias a react-router esto es posible),
+se requiere instalas un nuevo módulo que el react-router utiliza detrás de escenas,
+npm history
+De esta forma, se podrá acceder al history y manipularlo sin necesidad de estar en un ambiente con un componente que haga alusión a react-router.

@@ -16,3 +16,10 @@ export const startLogin = () => {
         return firebase.auth().signInWithPopup(googleAuthProvider);
     };
 };
+
+//Funcion asincrona para el proceso de cerrar sesion.
+export const startLogout = () => {
+    return () => {
+        return firebase.auth().signOut();
+    };
+};
