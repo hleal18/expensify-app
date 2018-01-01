@@ -17,7 +17,7 @@ export class AddExpensePage extends React.Component {
         //funcion.
         this.props.startAddExpense(expense);
         //Lo provee router. Permite redireccionar cuando se suban los datos.
-        this.props.history.push('/');
+        this.props.history.push('/dashboard');
     }
     render() {
         return (

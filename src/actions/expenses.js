@@ -16,7 +16,10 @@ export const startAddExpense = (expenseData = {}) => {
     //Como son asíncrónicas, esto permite que al terminar aquella tarea,
     //se invoque el dispatch para así mantener todos los datos correctamente
     //actualizados y visualizados.
-    return (dispatch) => {
+    //Para guardar expenses a un usuario especifico, se usa el segundo parametro.
+    //que es getState que contiene el uid del user.
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid;
         const {
             description = '',
             note = '',
@@ -24,7 +27,9 @@ export const startAddExpense = (expenseData = {}) => {
             createdAt = 0 
         } = expenseData;
         const expense = { description, note, amount, createdAt };
-        return database.ref('expenses').push(expense).then((ref) => {
+        //Se retorna un promise cuando se complete exitosamente la adicion de un expense
+        //de acuerdo al uid del usuario.
+        return database.ref(`users/${uid}/expenses`).push(expense).then((ref) => {
             dispatch(addExpense({
                 id: ref.key,
                 ...expense
@@ -41,8 +46,9 @@ export const removeExpense = ({ id } = {}) => ({
 
 //FUNCION ASINCRONICA REMOVE_EXPENSE
 export const startRemoveExpense = ({ id }) => {
-    return (dispatch) => {
-        return database.ref(`expenses/${id}`).remove().then(() => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid;
+        return database.ref(`users/${uid}/expenses/${id}`).remove().then(() => {
             dispatch(removeExpense({ id }));
         });
     };    
@@ -57,8 +63,9 @@ export const editExpense = (id, updates) => ({
 
 //FUNCION ASINCRONICA EDIT_EXPENSE
 export const startEditExpense = (id, update) => {
-    return (dispatch) => {
-        return database.ref(`expenses/${id}`).update(update).then(() => {
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid;
+        return database.ref(`users/${uid}/expenses/${id}`).update(update).then(() => {
             dispatch(editExpense(id, update));
         });
     };
@@ -70,10 +77,12 @@ export const setExpenses = (expenses) => ({
     expenses
 });
 
-//FROMA ASÍNCRONICA DE SET EXPENSES
+//FORMA ASÍNCRONICA DE SET EXPENSES
 export const startSetExpenses = () => {
-    return (dispatch) => {
-        return database.ref('expenses')
+    return (dispatch, getState) => {
+        const uid = getState().auth.uid;
+        //Se obtienen los expenses de acuerdo al uid contenida en el state.
+        return database.ref(`users/${uid}/expenses`)
             .once('value')
             .then((snapshot) => {
                 const expenses = [];
