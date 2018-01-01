@@ -5,7 +5,9 @@ import { Route, Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 
 export const PrivateRoute = ({ 
-    isAutheticated, 
+    isAuthenticated,
+    //Se renombra el campo component a Component, para que cumpla con la convención.
+    //(es compontne, debe comenzar con mayúscula.)
     component: Component,
     //Señala todos los demas campos que no se 'destructuraron'
     ...rest
@@ -17,7 +19,7 @@ export const PrivateRoute = ({
         //Si lo está, renderiza el componente recibidor en las props de PrivateRoute.
         //Si no lo está, se usa Redirect para redirigirlo a la pagina de Login.
         <Route {...rest} component={(props) => (
-            isAutheticated ? (
+            isAuthenticated ? (
                 <div>
                     <Header />
                     <Component {...props} />
@@ -31,7 +33,7 @@ export const PrivateRoute = ({
 
 const mapStateToProps = (state) => ({
     //True si esta autenticado o false si no lo esta.
-    isAutheticated: !!state.auth.uid
+    isAuthenticated: !!state.auth.uid
 });
 
 export default connect(mapStateToProps)(PrivateRoute);

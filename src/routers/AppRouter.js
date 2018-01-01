@@ -6,10 +6,11 @@ import AddExpensePage from '../components/AddExpensePage';
 import EditExpensePage from '../components/EditExpensePage';
 import ExpenseDashboardPage from '../components/ExpenseDashboardPage';
 import LoginPage from '../components/LoginPage';
-import HelpPage from '../components/HelpPage';
 import NotFoundPage from '../components/NotFoundPage';
 //Se van a agregar componentes que permitan gestionar las rutas privadas.
 import PrivateRoute from './PrivateRoute';
+//Se agrega un componente que permita gestionar rutas privadas.
+import PublicRoute from './PublicRoute';
 
 
 //Este history se le pasará al cambiado de 
@@ -24,12 +25,10 @@ const AppRouter = () => (
     <Router history={history}>
         <div>
             <Switch>
-                <Route path="/" component={LoginPage} exact={true} />
+                <PublicRoute path="/" component={LoginPage} exact={true} />
                 <PrivateRoute path="/dashboard" component={ExpenseDashboardPage}/>
                 <PrivateRoute path="/create" component={AddExpensePage} />
-                <PrivateRoute path="/edit/:id" component={EditExpensePage} />
-                <Route path="/help" component={HelpPage} />
-                
+                <PrivateRoute path="/edit/:id" component={EditExpensePage} />                
                 <Route component={NotFoundPage} />
             </Switch>
         </div>
