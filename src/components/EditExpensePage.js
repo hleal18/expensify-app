@@ -18,16 +18,24 @@ export class EditExpensePage extends React.Component {
                 {/*Se accede al id que es pasado por el router y accedido mediante
             match y params. Se encuentra en la url.
             Consultar en la consola el history en la herramienta React.
-        */}
-                <ExpenseForm
-                    expense={this.props.expense}
-                    onSubmit={this.onSubmit}
-                />
-                <button
-                    onClick={this.onClick}
-                >
-                    Remove
-            </button>
+                */}
+                <div className="page-header">
+                    <div className="content-container">
+                        <h1 className="page-header__title">Edit Expense</h1>
+                    </div>
+                </div>
+                <div className="content-container">
+                    <ExpenseForm
+                        expense={this.props.expense}
+                        onSubmit={this.onSubmit}
+                    />
+                    <button
+                        className="button button--secondary"
+                        onClick={this.onClick}
+                    >
+                        Remove Expense
+                    </button>
+                </div>
             </div>
         )
     }
