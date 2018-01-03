@@ -271,3 +271,8 @@ Debido a que se requiere garantizar el seguro acceso a las diferentes páginas a
 nuevo reducer debido a que se implican nuevos campos guardados en el store que se lleven a cabo.
 
 Clase 180: se explica como configurar babel polyfill, para que la aplicación sea compatible con varios navegadores.
+babel polyfill permite que funcionalidades que no sirven en navegadores viejos sean ahora compatibles.
+Se recomienda la herramienta de browserstack.
+babeljs.io -> para la doc de la herramienta
+npm install babel-polyfill@6.26.0
+Hay que configurarlo en el webpack.
