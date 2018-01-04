@@ -7,8 +7,7 @@ export default (state = expensesReducerDefaultState, action) => {
             return [
                 ...state,
                 {
-                    ...action.expense,
-                    confirmed: false
+                    ...action.expense
                 }
             ];            
         case 'REMOVE_EXPENSE':
@@ -20,21 +19,20 @@ export default (state = expensesReducerDefaultState, action) => {
                     //Se sobreescriben los que poseen updates del Action generator.
                     return {
                         ...expense,
-                        ...action.updates,
-                        confirmed: false
+                        ...action.updates
                     };                    
                 } else {
                     return expense;                    
                 }
             });
         case 'SET_EXPENSES':            
-            return action.expenses.map((expense) => ({...expense, confirmed: true }));
-        case 'CONFIRM_EXPENSE':
+            return action.expenses.map((expense) => ({...expense}));
+        case 'CHANGE_STATE_MESSAGE':
             return state.map((expense) => {
                 if(expense.id === action.id) {
                     return {
                         ...expense,
-                        confirmed: true
+                        message: action.message
                     };
                 } else {
                     return expense;

@@ -30,10 +30,11 @@ export const startAddExpense = (expenseData = {}) => {
         const key = ref.key;
         const expense = { description, note, amount, createdAt };
         dispatch(addExpense({id: key, ...expense}));
+        dispatch(changeStateExpense(key, 'Adding new expense'));
         //Se retorna un promise cuando se complete exitosamente la adicion de un expense
         //de acuerdo al uid del usuario.
         return ref.set(expense).then((ref) => {
-            dispatch(confirmExpense(key));
+            dispatch(changeStateExpense(key, 'Saved expense'));
         });
     };
 };
@@ -48,6 +49,7 @@ export const removeExpense = ({ id } = {}) => ({
 export const startRemoveExpense = ({ id }) => {
     return (dispatch, getState) => {
         const uid = getState().auth.uid;
+        dispatch(changeStateExpense(id, 'Removing expense'))
         return database.ref(`users/${uid}/expenses/${id}`).remove().then(() => {
             dispatch(removeExpense({ id }));
         });
@@ -65,9 +67,10 @@ export const editExpense = (id, updates) => ({
 export const startEditExpense = (id, update) => {
     return (dispatch, getState) => {
         dispatch(editExpense(id, update));
+        dispatch(changeStateExpense(id, 'Editing expense'));
         const uid = getState().auth.uid;
         return database.ref(`users/${uid}/expenses/${id}`).update(update).then(() => {
-            dispatch(confirmExpense(id));
+            dispatch(changeStateExpense(id, 'Saved expense'));
         });
     };
 };
@@ -94,15 +97,15 @@ export const startSetExpenses = () => {
                         ...childSnapshot.val()
                     });
                 });
-
                 dispatch(setExpenses(expenses));
+                expenses.forEach((expense) => {dispatch(changeStateExpense(expense.id, 'Saved expense'))});
             });
     };
 };
 
-//ACCION PARA CONFIRMAR Y CAMBIAR EL ESTADO DE UN EXPENSE
-//UTIL CUANDO SE CONFIRMO EL GUARDADO EN LA BD.
-export const confirmExpense = (id) => ({
-    type: 'CONFIRM_EXPENSE',
-    id
+//ACCION PARA ESTABLECER EL ESTADO DE UN EXPENSE
+export const changeStateExpense = (id, message) => ({
+    type: 'CHANGE_STATE_MESSAGE',
+    id,
+    message
 });
