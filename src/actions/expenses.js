@@ -64,9 +64,10 @@ export const editExpense = (id, updates) => ({
 //FUNCION ASINCRONICA EDIT_EXPENSE
 export const startEditExpense = (id, update) => {
     return (dispatch, getState) => {
+        dispatch(editExpense(id, update));
         const uid = getState().auth.uid;
         return database.ref(`users/${uid}/expenses/${id}`).update(update).then(() => {
-            dispatch(editExpense(id, update));
+            dispatch(confirmExpense(id));
         });
     };
 };
@@ -99,3 +100,9 @@ export const startSetExpenses = () => {
     };
 };
 
+//ACCION PARA CONFIRMAR Y CAMBIAR EL ESTADO DE UN EXPENSE
+//UTIL CUANDO SE CONFIRMO EL GUARDADO EN LA BD.
+export const confirmExpense = (id) => ({
+    type: 'CONFIRM_EXPENSE',
+    id
+});
