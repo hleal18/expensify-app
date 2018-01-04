@@ -9,7 +9,7 @@ class RemoveExpenseModal extends React.Component {
         return (
             <div>
                 <Modal
-                    isOpen={this.props.showModal}
+                    isOpen={!!this.props.showModal}
                     onRequestClose={this.props.onCloseModal}
                     contentLabel="Remove Expense"
                     className="modal"
