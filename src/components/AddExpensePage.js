@@ -17,15 +17,21 @@ export class AddExpensePage extends React.Component {
         //funcion.
         this.props.startAddExpense(expense);
         //Lo provee router. Permite redireccionar cuando se suban los datos.
-        this.props.history.push('/');
+        this.props.history.push('/dashboard');
     }
     render() {
         return (
             <div>
-            <h1>Add expense</h1>
-            <ExpenseForm
-                onSubmit={this.onSubmit}
-            />
+                <div className="page-header">
+                    <div className="content-container">
+                        <h1 className="page-header__title">Add Expense</h1>
+                    </div>
+                </div>
+                <div className="content-container">
+                    <ExpenseForm
+                        onSubmit={this.onSubmit}
+                    />
+                </div>
             </div>
         );
     }

@@ -1,0 +1,36 @@
+.box-layout {
+    //La imagen de fondo
+    //Como lo que se busca esta en la carpeta publica
+    //del servidor, y eso es lo que va a estar en el
+    //navegador, se pone la ruta relacionada con la
+    //carpeta publica y no la actual del proyecto.
+    background: url('/images/bg.jpg');
+    //Se alinean las dimensiones de la imagen para que
+    //ocupen la del navegador.
+    //vh = viewport height.
+    height: 100vh;
+    //viewport width.
+    width: 100vw;
+    //Cubre el contenedor con la imagen.
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box-layout__box {
+    //Funcion scss.
+    //Un cuadro transparente redondeando los mensjaes y formas.
+    //. 15%.
+    background: fade-out($color: white, $amount: .15);
+    border-radius: 3px;
+    text-align: center;
+    width: 25rem;
+    padding: $l-size $m-size;
+}
+
+.box-layout__title {
+    margin: 0 0 $m-size 0;
+    line-height: 1;
+    
+}

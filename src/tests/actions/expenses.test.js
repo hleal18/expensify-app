@@ -15,6 +15,10 @@ import database from '../../firebase/firebase';
 
 //Se le pasa un array de middlewares.
 const createMockStore = configureMockStore([thunk]);
+//Se configura un UID para las CRUD de firebase en el Expensify-Test 
+const uid = 'thisismytestuid';
+//Se usa para definir un estado por defecto que contenga el uid.
+const defaultAuthState = { auth: { uid } };
 
 beforeEach((done) => {
     //Se busca que antes de cada test case, los fixtures de los archivos se guarden firebase
@@ -27,7 +31,7 @@ beforeEach((done) => {
     });
     //Como se pretende correr el beforeEach antes de cada test case, y es un proceso asíncrono,
     //debe asegurarse que se le indique a jest que es un proceso asíncrono y que espere a que finalice.
-    database.ref('expenses').set(expensesData).then(() => done());
+    database.ref(`users/${uid}/expenses`).set(expensesData).then(() => done());
 });
 
 //test case para remover expenses.
@@ -35,14 +39,14 @@ test('should set-up remove expense action object', () => {
     const action = removeExpense({ id: '123abc' });
     //se usa toEqual para comparar todas las propiedades de los objetos comparados.
     expect(action).toEqual({
-        type: 'REMOVE_EXPENSE',
+        type: 'REMOVE_EXPENSE', 
         id: '123abc'
     });
 });
 
 //test case para la forma asincronica de remove expense
 test('should remove expense from firebase', (done) => {
-    const store = createMockStore();
+    const store = createMockStore(defaultAuthState);
     store.dispatch(startRemoveExpense(expenses[0])).then(() => {
         //Se testea que la acción correcta fue despachada hacia el store.
         const actions = store.getActions();
@@ -54,7 +58,7 @@ test('should remove expense from firebase', (done) => {
         //Retorna un promise que evita se invoque un then en un ambiente anidado.
         //Se va a testear que los expenses guardados tengan uno menos, el que se
         //removió.
-        return database.ref('expenses').once('value');       
+        return database.ref(`users/${uid}/expenses`).once('value');       
     }).then((snapshot) => {
         //Se comprueba que no exista el expense con id '1'
         //se usa child para buscar el child a partir del id='1'
@@ -65,7 +69,7 @@ test('should remove expense from firebase', (done) => {
         //(a la autor le funcionó, a mí no).
         //expect(snapshot.child('1')).toBeFalsy();
         done();
-    });          
+    });  
 });
 
 //test case para editar expenses
@@ -85,7 +89,7 @@ test('should set up edit expense action object', () => {
 //a firebase.
 test('should edit expense from firebase', (done) => {
     //Se crea el mock store que guardará las acciones.
-    const store = createMockStore();
+    const store = createMockStore(defaultAuthState);
     //Los datos a actualizar en firebase.
     const modExpense = {
         description: 'Expense modified',
@@ -107,7 +111,7 @@ test('should edit expense from firebase', (done) => {
                 updates: modExpense
             });
 
-            return database.ref('expenses').once('value');
+            return database.ref(`users/${uid}/expenses`).once('value');
             //Se encadena la promesa retornada y se recibe el snapshot.
             //se aprovecha para consultar el child a partir del id
             //del expense modificado y los valores que contiene.
@@ -141,7 +145,7 @@ test('should set up add expense action object with provided values', () => {
 //que indica hasta que momento se considera que el proceso habrá 
 //finalizado.
 test('should add expense to database and store', (done) => {
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
     const expenseData = {
         description: 'Mouse',
         amount: 3000,
@@ -174,7 +178,7 @@ test('should add expense to database and store', (done) => {
         });
         //Tambien se va a testear que los datos hayan sido escritos correctamente
         //por lo cual se buscará consultarla.
-        return database.ref(`expenses/${actions[0].expense.id}`).once('value');
+        return database.ref(`users/${uid}/expenses/${actions[0].expense.id}`).once('value');
 
         //Evalua correctamente la instrucción asíncronica.
         //done();
@@ -186,7 +190,7 @@ test('should add expense to database and store', (done) => {
 });
 
 test('should add expense with defaults to database and store', (done) => {
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
     const expenseDefaults = {
         description: '',
         note: '',
@@ -204,7 +208,7 @@ test('should add expense with defaults to database and store', (done) => {
             }
         });
         
-        return database.ref(`expenses/${actions[0].expense.id}`).once('value');        
+        return database.ref(`users/${uid}/expenses/${actions[0].expense.id}`).once('value');        
     }).then((snapshot) => {
         expect(snapshot.val()).toEqual(expenseDefaults);
         done();
@@ -221,7 +225,7 @@ test('should set up set expense action object with data', () => {
 
 test('should fetch the expenses from firebase', (done) => {
     //Se crea el store
-    const store = createMockStore({});
+    const store = createMockStore(defaultAuthState);
     //Se comprueba que al realizar dispatch, si se tuvo exito, se invocaron las acciones
     //correctas.
     store.dispatch(startSetExpenses()).then(() => {

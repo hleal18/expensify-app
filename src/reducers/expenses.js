@@ -6,7 +6,9 @@ export default (state = expensesReducerDefaultState, action) => {
             //Se puede usar el es6 spread operator en arreglos.
             return [
                 ...state,
-                action.expense
+                {
+                    ...action.expense
+                }
             ];            
         case 'REMOVE_EXPENSE':
             return state.filter(({ id }) => id !== action.id);            
@@ -24,7 +26,18 @@ export default (state = expensesReducerDefaultState, action) => {
                 }
             });
         case 'SET_EXPENSES':            
-            return action.expenses;
+            return action.expenses.map((expense) => ({...expense}));
+        case 'CHANGE_STATE_MESSAGE':
+            return state.map((expense) => {
+                if(expense.id === action.id) {
+                    return {
+                        ...expense,
+                        message: action.message
+                    };
+                } else {
+                    return expense;
+                };
+            });
         default:
             return state;
     }

@@ -1,3 +1,17 @@
+//Aqui es donde se enlazan todos los demas archivos relacionados con css.
 //Si es una fuente parcial, se le quita el guión bajo y no se pone la extensión.
 @import './base/settings';
 @import './base/base';
+@import './components/box-layout';
+@import './components/button.scss';
+@import './components/header.scss';
+@import './components/content-container.scss';
+@import './components/page-header.scss';
+@import './components/input-group.scss';
+@import './components/inputs.scss';
+@import './components/form.scss';
+@import './components/visibility.scss';
+@import './components/list.scss';
+@import './components/loader.scss';
+@import './components/modal.scss';
+@import './components/availability.scss';

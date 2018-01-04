@@ -23,6 +23,6 @@ test('should handle onSubmit', () => {
     //Se quiere accionar el onSubmit del componente ExpenseForm.
     wrapper.find('ExpenseForm').prop('onSubmit')(expenses[1]);
     //Despues de accionar el evento, se comprueba que los spies fueron llamados.
-    expect(history.push).toHaveBeenLastCalledWith('/');
+    expect(history.push).toHaveBeenLastCalledWith('/dashboard');
     expect(startAddExpense).toHaveBeenLastCalledWith(expenses[1]);
 });

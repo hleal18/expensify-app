@@ -5,9 +5,7 @@ import { Route, Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 
 export const PrivateRoute = ({ 
-    isAuthenticated,
-    //Se renombra el campo component a Component, para que cumpla con la convención.
-    //(es compontne, debe comenzar con mayúscula.)
+    isAuthenticated, 
     component: Component,
     //Señala todos los demas campos que no se 'destructuraron'
     ...rest
@@ -25,7 +23,9 @@ export const PrivateRoute = ({
                     <Component {...props} />
                 </div>
             ) : (
-                    <Redirect to="/" />
+                    <div>
+                        <Redirect to="/" />
+                    </div>
                 )
         )} />
     );

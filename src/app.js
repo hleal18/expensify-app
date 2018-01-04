@@ -13,6 +13,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import getExpensesTotal from './selectors/expense-total';
 import expenses from './tests/fixtures/expenses';
 import { firebase } from './firebase/firebase';
+import LoadingPage from './components/LoadingPage.js';
 
 const store = configureStore();
 
@@ -34,7 +35,8 @@ const renderApp = () => {
     }
 };
 
-ReactDOM.render(<p>loading...</p>, document.getElementById('app'));
+
+ReactDOM.render(<LoadingPage />, document.getElementById('app'));
 
 
 
@@ -53,10 +55,11 @@ firebase.auth().onAuthStateChanged((user) => {
             //Como el onAuthStateChanged se ejecuta a cada rato (actualizar ventana), 
             //solo se redirige
             //al usuario al dashboard cuando este se encuentra en la LoginPage
-            //que corresponde a '/'.
-            if (history.location.pathname === '/') {
-                history.push('/dashboard');
-            }
+            // //que corresponde a '/'.
+            // if (history.location.pathname === '/') {
+            //     history.push('/dashboard');
+            //     console.log('Se ejecuta onAuthStateChange');
+            // }
         });
     } 
     //Si no hay, no no hay sesión iniciada.
@@ -65,6 +68,6 @@ firebase.auth().onAuthStateChanged((user) => {
         store.dispatch(logout());
         renderApp();
         //Cuando se cierre sesion se redirige a la LoginPage.
-        history.push('/');
+        //history.push('/');
     }
 })

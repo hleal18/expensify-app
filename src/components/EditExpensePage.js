@@ -1,33 +1,57 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ExpenseForm from './ExpenseForm';
+import RemoveExpenseModal from './RemoveExpenseModal';
 import { startEditExpense, startRemoveExpense } from '../actions/expenses';
 
 export class EditExpensePage extends React.Component {
+    state = {
+        showModal: false
+    };
     onSubmit = (expense) => {
         this.props.startEditExpense(this.props.expense.id, expense);
         this.props.history.push('/');
-    }
-    onClick = () => {
+    };
+    onActionModal = () => {
         this.props.startRemoveExpense({ id: this.props.expense.id });
         this.props.history.push('/');
-    }
+    };
+    onClick = () => {
+        this.setState(() => ({ showModal: true }));
+    };
     render() {
         return (
             <div>
                 {/*Se accede al id que es pasado por el router y accedido mediante
             match y params. Se encuentra en la url.
             Consultar en la consola el history en la herramienta React.
-        */}
-                <ExpenseForm
-                    expense={this.props.expense}
-                    onSubmit={this.onSubmit}
-                />
-                <button
-                    onClick={this.onClick}
-                >
-                    Remove
-            </button>
+                */}
+                <div className="page-header">
+                    <div className="content-container">
+                        <h1 className="page-header__title">Edit Expense</h1>
+                    </div>
+                </div>
+                <div className="content-container">
+                    <ExpenseForm
+                        expense={this.props.expense}
+                        onSubmit={this.onSubmit}
+                    />
+                    <button
+                        className="button button--secondary"
+                        onClick={this.onClick}
+                    >
+                        Remove Expense
+                    </button>
+                </div>
+                <div>
+                    <RemoveExpenseModal
+                        showModal={this.state.showModal}
+                        onAction={this.onActionModal}
+                        onCloseModal={() => {
+                            this.setState(() => ({ showModal: false }));
+                        }}
+                    />
+                </div>
             </div>
         )
     }
