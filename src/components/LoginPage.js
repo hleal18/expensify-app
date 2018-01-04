@@ -15,8 +15,10 @@ export class LoginPage extends React.Component {
                 <div className="box-layout__box">
                     <h1 className="box-layout__title">Expensify</h1>
                     <p>It's time to get your expenses under control.</p>
-                    <button className="button" onClick={this.onGoogleStartLogin}>Login with google</button>
+                    <div >
+                    <button className="button button--first" onClick={this.onGoogleStartLogin}>Login with google</button>
                     <button className="button" onClick={this.onGithubStartLogin}>Login with github</button>
+                    </div>
                 </div>                
             </div>
         );

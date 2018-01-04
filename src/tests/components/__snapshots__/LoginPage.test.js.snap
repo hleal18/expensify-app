@@ -15,18 +15,20 @@ exports[`should render correctly the LoginPage component 1`] = `
     <p>
       It's time to get your expenses under control.
     </p>
-    <button
-      className="button"
-      onClick={[Function]}
-    >
-      Login with google
-    </button>
-    <button
-      className="button"
-      onClick={[Function]}
-    >
-      Login with github
-    </button>
+    <div>
+      <button
+        className="button button--first"
+        onClick={[Function]}
+      >
+        Login with google
+      </button>
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        Login with github
+      </button>
+    </div>
   </div>
 </div>
 `;
