@@ -26,14 +26,14 @@ export const startAddExpense = (expenseData = {}) => {
             amount = 0,
             createdAt = 0 
         } = expenseData;
+        const ref = database.ref(`users/${uid}/expenses`).push();
+        const key = ref.key;
         const expense = { description, note, amount, createdAt };
+        dispatch(addExpense({id: key, ...expense}));
         //Se retorna un promise cuando se complete exitosamente la adicion de un expense
         //de acuerdo al uid del usuario.
-        return database.ref(`users/${uid}/expenses`).push(expense).then((ref) => {
-            dispatch(addExpense({
-                id: ref.key,
-                ...expense
-            }));
+        return ref.set(expense).then((ref) => {
+            dispatch(confirmExpense(key));
         });
     };
 };
