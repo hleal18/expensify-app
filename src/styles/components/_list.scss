@@ -44,6 +44,12 @@
     }
 }
 
+//Si se apunta a un item en la columna derecha, lo alinea a la derecha,
+//aprovechando el espacio.
+.list-item__right {
+    text-align: right;
+}
+
 .list-item__title {
     margin: 0;
     word-break: break-all;
