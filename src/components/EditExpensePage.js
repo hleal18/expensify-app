@@ -12,6 +12,10 @@ export class EditExpensePage extends React.Component {
         this.props.startEditExpense(this.props.expense.id, expense);
         this.props.history.push('/');
     };
+    onActionModal = () => {
+        this.props.startRemoveExpense({ id: this.props.expense.id });
+        this.props.history.push('/');
+    };
     onClick = () => {
         this.setState(() => ({ showModal: true }));
     };
@@ -42,10 +46,7 @@ export class EditExpensePage extends React.Component {
                 <div>
                     <RemoveExpenseModal
                         showModal={this.state.showModal}
-                        onAction={() => {
-                            this.props.startRemoveExpense({ id: this.props.expense.id });
-                            this.props.history.push('/');
-                        }}
+                        onAction={this.onActionModal}
                         onCloseModal={() => {
                             this.setState(() => ({ showModal: false }));
                         }}

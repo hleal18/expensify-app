@@ -12,7 +12,6 @@ exports[`should render Header correctly 1`] = `
     >
       <Link
         className="header__title"
-        exact={true}
         replace={false}
         to="/dashboard"
       >

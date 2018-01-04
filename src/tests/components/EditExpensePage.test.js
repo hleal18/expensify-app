@@ -29,7 +29,13 @@ test('should handle onSubmit', () => {
 });
 
 test('should handle onClick', () => {
-    wrapper.find('button').simulate('click');
+    wrapper.find('button').simulate('click');    
+    expect(wrapper.state('showModal')).toBe(true);
+});
+
+test('should invoke startRemoveExpense with the id and the redirection to the index', () => {
+    //Se invoca la funcion de la propiedad onAction del componente RemoveExpenseModal.
+    wrapper.find('RemoveExpenseModal').prop('onAction')();
     expect(startRemoveExpense).toHaveBeenLastCalledWith({ id: expenses[1].id });
     expect(history.push).toHaveBeenLastCalledWith('/');
-});
+})
