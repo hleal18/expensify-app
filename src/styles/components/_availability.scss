@@ -1,0 +1,6 @@
+//Se encarga de desabilitar elementos html.
+//Permite deshabilitar un link.
+.availability--false {
+    pointer-events: none;
+    cursor: default;
+}
