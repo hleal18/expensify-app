@@ -15,8 +15,14 @@ test('should render correctly the LoginPage component', () => {
     expect(wrapper).toMatchSnapshot();
 });
 
-
-test('should call startLogin on button click', () => {
-    wrapper.find('button').simulate('click');
-    expect(startLogin).toHaveBeenCalled();
+//Evalua que el metodo startLogin se invoque para el login con google.
+test('should call startLogin on button click with google mehod', () => {
+    wrapper.find('button').at(0).simulate('click');
+    expect(startLogin).toHaveBeenLastCalledWith('google');
 });
+
+//Evalua que el metodo startLogin se invoque para el login con github
+test('should call startLogin on button click with github method', () => {
+    wrapper.find('button').at(1).simulate('click');
+    expect(startLogin).toHaveBeenLastCalledWith('github');
+})

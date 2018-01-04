@@ -21,6 +21,12 @@ exports[`should render correctly the LoginPage component 1`] = `
     >
       Login with google
     </button>
+    <button
+      className="button"
+      onClick={[Function]}
+    >
+      Login with github
+    </button>
   </div>
 </div>
 `;

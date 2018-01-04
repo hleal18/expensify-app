@@ -2,15 +2,16 @@
 //gestionar el proceso de autenticacion con firebase por medio
 //del proveedor google.
 
-import { firebase, googleAuthProvider } from '../firebase/firebase';
+import { firebase, googleAuthProvider, githubAuthProvider } from '../firebase/firebase';
 
 //Acción para el inicio de sesion.
 export const login = (uid) => ({
     type: 'LOGIN',
     uid
 });
+
 //Funcion asincrona para iniciar el proceso de inicio de sesion.
-export const startLogin = () => {
+export const startLogin = (providerName) => {
     return () => {
         //Se accede a las funcionalidades de firebase, auth.
         //Lo siguiente quiere decir que se va a inicar sesión
@@ -18,7 +19,14 @@ export const startLogin = () => {
         //Regresa un promise
         //El popup abre una ventanita emergente para elegir la cuenta
         //google
-        return firebase.auth().signInWithPopup(googleAuthProvider);
+        //Se le añade soporte para google o github.
+        let provider;
+        if(providerName === 'google') {
+            provider = googleAuthProvider;
+        } else if(providerName === 'github') {
+            provider = githubAuthProvider;
+        }
+        return firebase.auth().signInWithPopup(provider);
     };
 };
 
