@@ -12,6 +12,12 @@ export const ExpensesSummary = (props) => {
         <div className="page-header">
             <div className="content-container">
                 <h1 className="page-header__title">Viewing <span>{props.expenseCount}</span> {expenseWord} totalling <span>{formattedExpenseTotal}</span></h1>
+                {
+                    props.hiddenExpenses !== 0 && props.hiddenExpenses ?
+                        <h2 className="page-header__title">Hiding <span>{props.hiddenExpenses}</span> expense due to the filters.</h2> 
+                        :
+                        <h2 className="page-header__title">Showing all the expenses.</h2>
+                }
                 <div className="page-header__actions">
                     <Link className="button" to="/create">Add Expense</Link>
                 </div>
@@ -22,10 +28,11 @@ export const ExpensesSummary = (props) => {
 
 const mapStateToProps = (state) => {
     const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
-
+    const hiddenExpenses = state.expenses.length - visibleExpenses.length;
     return {
         expenseCount: visibleExpenses.length,
-        expensesTotal: selectExpensesTotal(visibleExpenses)
+        expensesTotal: selectExpensesTotal(visibleExpenses),
+        hiddenExpenses
     };
 };
 

@@ -17,7 +17,7 @@ exports[`should render RemoveExpenseModal correctly 1`] = `
     <h3
       className="modal__title"
     >
-      ¿Do you want to delete the expense?
+      Do you want to delete the expense?
     </h3>
     <button
       className="button"

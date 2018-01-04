@@ -14,7 +14,7 @@ class RemoveExpenseModal extends React.Component {
                     contentLabel="Remove Expense"
                     className="modal"
                 >
-                    <h3 className="modal__title">¿Do you want to delete the expense?</h3>
+                    <h3 className="modal__title">Do you want to delete the expense?</h3>
                     <button onClick={this.onAcceptActionHandler} className="button">
                         Accept
                     </button>

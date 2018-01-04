@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should render correctly ExpensesSummary for multiple expenses 1`] = `
+exports[`should render correctly ExpensesSummary for multiple expenses and no one hidden 1`] = `
 <div
   className="page-header"
 >
@@ -21,6 +21,11 @@ exports[`should render correctly ExpensesSummary for multiple expenses 1`] = `
         $1,141.95
       </span>
     </h1>
+    <h2
+      className="page-header__title"
+    >
+      Showing all the expenses.
+    </h2>
     <div
       className="page-header__actions"
     >
@@ -36,7 +41,7 @@ exports[`should render correctly ExpensesSummary for multiple expenses 1`] = `
 </div>
 `;
 
-exports[`should render correctly ExpensesSummary for one expense 1`] = `
+exports[`should render correctly ExpensesSummary for one expense and two hidden 1`] = `
 <div
   className="page-header"
 >
@@ -57,6 +62,15 @@ exports[`should render correctly ExpensesSummary for one expense 1`] = `
         $1.95
       </span>
     </h1>
+    <h2
+      className="page-header__title"
+    >
+      Hiding 
+      <span>
+        2
+      </span>
+       expense due to the filters.
+    </h2>
     <div
       className="page-header__actions"
     >
