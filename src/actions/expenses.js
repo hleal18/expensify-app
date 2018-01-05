@@ -67,9 +67,11 @@ export const editExpense = (id, updates) => ({
 export const startEditExpense = (id, update) => {
     return (dispatch, getState) => {
         dispatch(editExpense(id, update));
+        //Indica el proceso de editado (aun no se ha guardado en la BD.)
         dispatch(changeStateExpense(id, 'Editing expense'));
         const uid = getState().auth.uid;
         return database.ref(`users/${uid}/expenses/${id}`).update(update).then(() => {
+            //Indica la finalizacion del proceso y el guardado correcto.
             dispatch(changeStateExpense(id, 'Saved expense'));
         });
     };
@@ -98,6 +100,7 @@ export const startSetExpenses = () => {
                     });
                 });
                 dispatch(setExpenses(expenses));
+                //Se le agrega el mensaje de estado.
                 expenses.forEach((expense) => {dispatch(changeStateExpense(expense.id, 'Saved expense'))});
             });
     };

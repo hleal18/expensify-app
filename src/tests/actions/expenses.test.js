@@ -6,7 +6,8 @@ import {
     setExpenses, 
     startSetExpenses, 
     startRemoveExpense,
-    startEditExpense
+    startEditExpense,
+    changeStateExpense
 } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import configureMockStore from 'redux-mock-store';
@@ -50,9 +51,17 @@ test('should remove expense from firebase', (done) => {
     store.dispatch(startRemoveExpense(expenses[0])).then(() => {
         //Se testea que la acción correcta fue despachada hacia el store.
         const actions = store.getActions();
-        expect(actions[0]).toEqual({
+        //Se corren la accion de changeState y removeExpense.
+        expect(actions[1]).toEqual({
             type: 'REMOVE_EXPENSE',
             id: expenses[0].id
+        });
+
+        //Se comprueba que el objeto changeState sea el correcto.
+        expect(actions[0]).toEqual({
+            type: 'CHANGE_STATE_MESSAGE',
+            id: expenses[0].id,
+            message: 'Removing expense'
         });
 
         //Retorna un promise que evita se invoque un then en un ambiente anidado.
@@ -67,9 +76,9 @@ test('should remove expense from firebase', (done) => {
         expect(snapshot.child('1').exists()).toBe(false);
         //TAmbien, como regresa null, se compara con toBeFalsy
         //(a la autor le funcionó, a mí no).
-        //expect(snapshot.child('1')).toBeFalsy();
+        //expect(snapshot.child('1')).toBeFalsy();        
         done();
-    });  
+    });
 });
 
 //test case para editar expenses
@@ -111,6 +120,13 @@ test('should edit expense from firebase', (done) => {
                 updates: modExpense
             });
 
+            //Se comprueba que se accione el changeStateMessage
+            expect(action[1]).toEqual({
+                type: 'CHANGE_STATE_MESSAGE',
+                id: expenses[2].id,
+                message: 'Editing expense'
+            });
+
             return database.ref(`users/${uid}/expenses`).once('value');
             //Se encadena la promesa retornada y se recibe el snapshot.
             //se aprovecha para consultar el child a partir del id
@@ -124,6 +140,17 @@ test('should edit expense from firebase', (done) => {
                 amount: modExpense.amount,
                 createdAt: expenses[2].createdAt
             });
+            
+            //Se obtienen de nuevo las acciones
+            //Y se comprueba que el estado para el expense haya
+            //cambiado.
+            const actions = store.getActions();
+            expect(actions[2]).toEqual({
+                type: 'CHANGE_STATE_MESSAGE',
+                id: snapshot.child(expenses[2].id).key,
+                message: 'Saved expense'
+            });
+
             //Se le indicaa jest que es una instruccion asincronica.
             done();
         })
@@ -176,6 +203,13 @@ test('should add expense to database and store', (done) => {
                 ...expenseData
             }
         });
+
+        //Se comprueba que la accion changeStateMessage haya sido invocada.
+        expect(actions[1]).toEqual({
+            type: 'CHANGE_STATE_MESSAGE',
+            id: expect.any(String),
+            message: 'Adding new expense'
+        });
         //Tambien se va a testear que los datos hayan sido escritos correctamente
         //por lo cual se buscará consultarla.
         return database.ref(`users/${uid}/expenses/${actions[0].expense.id}`).once('value');
@@ -184,6 +218,14 @@ test('should add expense to database and store', (done) => {
         //done();
     }).then((snapshot) => {
         expect(snapshot.val()).toEqual(expenseData);
+        //Se comprueba que la accion de cambio de estado se haya vuelto
+        //a invocar.
+        const actions = store.getActions();
+        expect(actions[2]).toEqual({
+            type: 'CHANGE_STATE_MESSAGE',
+            id: expect.any(String),
+            message: 'Saved expense'
+        });
         //Evalua correctamente la instrucción asíncronica.
         done();
     });
@@ -238,8 +280,24 @@ test('should fetch the expenses from firebase', (done) => {
             type: 'SET_EXPENSES',
             expenses
         });
+        //Comprueba que la accion de changeStateExpense haya sido invocada por lo menos
+        //para un objeto cualquiera que estaba en firebase.
+        expect(actions[1]).toEqual({
+            type: 'CHANGE_STATE_MESSAGE',
+            id: expect.any(String),
+            message: 'Saved expense'
+        });
         //Se le indica que todos es una instrucción asíncronica.
         done();
     });
 });
 
+//Evalua que se devuelva el objeto con la accion de cambio de estado.
+test('should set up change state message for an expense', () => {
+    const action = changeStateExpense(expenses[1].id, 'Adding new expense');
+    expect(action).toEqual({
+        type: 'CHANGE_STATE_MESSAGE',
+        id: expenses[1].id,
+        message: 'Adding new expense'
+    });
+});
