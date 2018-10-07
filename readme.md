@@ -1,7 +1,6 @@
-#Git Commands
+# Expensify App
 
-git init - Create a new git repo 
-git status - View the changes to your project code
-git add - Add files to staging area (run: git add . , if you want to add all the files to the staging area.)
-git commit - Creates a new commit with files from staging area
-git log - View recent commits
+
+React and Firebase web app that tracks user's expenses. Based on React udemy course available at: [React course](https://www.udemy.com/react-2nd-edition/)
+
+Example deployed to heroku and available through: [expensify-app-18](https://expensify-app-18.herokuapp.com/)
